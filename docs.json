@@ -1,72 +1,101 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "PkPay+",
+  "theme": "luma",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#081028",
+    "light": "#7c7c7c",
+    "dark": "#c9c9c9"
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "pages": [
+    "tabs": [
       {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "authentication"
+            ]
+          },
+          {
+            "group": "Core Features",
+            "pages": [
+              "accept-payments",
+              "payment-links",
+              "subscriptions",
+              "invoicing",
+              "payouts"
+            ]
+          },
+          {
+            "group": "Merchant Account",
+            "pages": [
+              "merchant-id",
+              "merchant-api-keys",
+              "customers",
+              "transactions",
+              "disputes"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/php",
+              "integrations/laravel",
+              "integrations/wordpress"
+            ]
+          },
+          {
+            "group": "Platform & Security",
+            "pages": [
+              "security",
+              "pricing"
+            ]
+          }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    ]
   },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@pkpayplus.com"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "href": "https://merchant.pkpayplus.com/"
     }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
   },
   "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+    "links": [
+      {
+        "header": "Product",
+        "items": [
+          { "label": "Dashboard", "href": "https://merchant.pkpayplus.com/" },
+          { "label": "Documentation", "href": "/" },
+          { "label": "Support", "href": "mailto:support@pkpayplus.com" }
+        ]
+      },
+      {
+        "header": "Community",
+        "items": [
+          { "label": "GitHub", "href": "https://github.com/pkpayplus" }
+        ]
+      }
+    ]
+  },
+  "appearance": {
+    "default": "dark",
+    "strict": false
+  },
+  "background": {
+    "decoration": "grid"
   }
 }

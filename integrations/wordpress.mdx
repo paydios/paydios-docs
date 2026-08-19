@@ -1,0 +1,87 @@
+---
+title: "Accept Payments on WordPress with PkPay+"
+sidebarTitle: "WordPress"
+description: "Install the PkPay+ plugin for WordPress and WooCommerce. Configure your API keys and start accepting payments on your WordPress site."
+---
+
+PkPay+ offers a WordPress plugin that adds payment acceptance to your WordPress site or WooCommerce store. Once installed and configured with your API keys, customers can pay using any supported payment method at checkout — including cards, digital wallets, and crypto — without leaving your site.
+
+<Note>
+  The PkPay+ WordPress plugin is **coming soon**. For now, use the PHP SDK to integrate PkPay+ into your WordPress or WooCommerce theme directly via custom PHP. See the [PHP integration guide](/integrations/php) to get started today.
+</Note>
+
+## Requirements
+
+- WordPress 6.0+
+- WooCommerce 8.0+ (required for WooCommerce checkout integration)
+- PHP 8.1+
+
+## Plugin Installation
+
+<Steps>
+  <Step title="Find the PkPay+ plugin">
+    In your WordPress admin, go to **Plugins → Add New Plugin** and search for **PkPay+**. Alternatively, download the plugin ZIP directly from the WordPress plugin directory and upload it via **Plugins → Add New → Upload Plugin**.
+  </Step>
+
+  <Step title="Install and activate">
+    Click **Install Now** next to the PkPay+ plugin result, then click **Activate** once the installation completes.
+  </Step>
+
+  <Step title="Open PkPay+ settings">
+    - **With WooCommerce:** Navigate to **WooCommerce → Settings → Payments** and find PkPay+ in the list.
+    - **Without WooCommerce:** Navigate to **Settings → PkPay+** in your WordPress admin sidebar.
+  </Step>
+
+  <Step title="Open the setup panel">
+    Click **Set up** next to PkPay+ to open the configuration panel.
+  </Step>
+</Steps>
+
+## Configure API Keys
+
+<Steps>
+  <Step title="Enter your Secret Key">
+    In the PkPay+ settings panel, paste your **Secret Key** (begins with `sk_live_`). You can find it in the [merchant dashboard](https://merchant.pkpayplus.com/) under **API Keys**.
+  </Step>
+
+  <Step title="Enter your Merchant ID">
+    Paste your **Merchant ID** from the merchant dashboard into the Merchant ID field.
+  </Step>
+
+  <Step title="Save your settings">
+    Click **Save changes**. PkPay+ will validate your credentials and enable the payment method.
+  </Step>
+</Steps>
+
+<Warning>
+  Only enter your secret key in the WordPress backend settings panel. Never add it to theme files, template files, or any JavaScript — it would be exposed to the public.
+</Warning>
+
+## What's Included
+
+<CardGroup cols={2}>
+  <Card title="WooCommerce Support" icon="cart-shopping">
+    Full checkout integration with WooCommerce. PkPay+ appears as a payment option on the standard WooCommerce checkout page.
+  </Card>
+  <Card title="Custom Payment Forms" icon="rectangle-list">
+    Embed a PkPay+ payment form on any WordPress page or post using a shortcode or block — no WooCommerce required.
+  </Card>
+  <Card title="Payment Links" icon="link">
+    Generate shareable payment links from the merchant dashboard or plugin settings. No coding needed to request payment.
+  </Card>
+  <Card title="Webhook Handling" icon="arrows-rotate">
+    The plugin automatically handles incoming webhooks from PkPay+ to keep WooCommerce order statuses in sync with payment events.
+  </Card>
+</CardGroup>
+
+## Accepted Payment Methods
+
+PkPay+ supports all standard payment methods on WordPress, including major credit and debit cards (Visa, Mastercard, Amex, Discover), digital wallets (Apple Pay, Google Pay, Revolut Pay), and cryptocurrency (Bitcoin, USDT, USDC, ETH, and more). Local payment methods such as PIX for Brazil and Klarna BNPL are also available where supported.
+
+## Integrate Today with the PHP SDK
+
+While the dedicated WordPress plugin is in development, you can accept payments on your WordPress site right now using the PkPay+ PHP SDK directly in your theme or a custom plugin.
+
+<Card title="PHP Integration Guide" icon="php" href="/integrations/php">
+  Use the PkPay+ PHP SDK in plain PHP or alongside WordPress hooks to manage products and create checkout sessions — no plugin required.
+</Card>

@@ -1,47 +1,127 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with PkPay+ in Under 10 Minutes"
+sidebarTitle: "Quickstart"
+description: "Create your PkPay+ merchant account, get your API key, and make your first payment API call or PHP SDK request in minutes."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+This page walks you through everything you need to go from zero to your first live payment request. By the end you will have a merchant account, a working API key, a product in the system, and a checkout session ready to accept payments — using either the PHP SDK or raw REST calls.
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
-
-    ```bash
-    npm install your-package
-    ```
+  <Step title="Create your account">
+    Go to [merchant.pkpayplus.com/sign-up](https://merchant.pkpayplus.com/sign-up) and register with your email address. After signing up, verify your email using the confirmation link sent to your inbox, then complete your merchant profile in the dashboard. A complete profile is required before you can process live payments.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
 
-    ```bash
-    your-cli init
-    ```
+  <Step title="Get your API keys">
+    In the merchant dashboard, navigate to **Dashboard → API Keys** at [merchant.pkpayplus.com/dashboard/api-keys](https://merchant.pkpayplus.com/dashboard/api-keys).
+
+    You will see two credentials you need:
+
+    - **Secret Key** (`sk_live_xxx`) — used for all server-side API calls. Keep this private.
+    - **Merchant ID** — your unique account identifier, required in checkout session endpoints.
+
+    Copy both values and store them securely.
+
+    <Warning>
+      Never include your Secret Key in frontend code, client-side JavaScript, or any publicly accessible file. It grants full API access to your account. Use environment variables on your server instead.
+    </Warning>
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+
+  <Step title="Install the PHP SDK (or use REST directly)">
+    If you are using PHP, install the official SDK with Composer:
 
     ```bash
-    your-cli start
+    composer require pkpayplus/pkpayplus-php
     ```
+
+    Add your Secret Key to your `.env` file:
+
+    ```env
+    PKPAYPLUS_SECRET_KEY=sk_live_xxxxxxxxx
+    ```
+
+    Do not commit your `.env` file to version control. If you prefer to call the REST API directly without the SDK, skip this step and use the `curl` examples in the [Authentication](/authentication) guide.
+  </Step>
+
+  <Step title="Create your first product">
+    A **product** represents an item or service you sell. Create one using the SDK:
+
+    ```php
+    <?php
+    require __DIR__ . '/vendor/autoload.php';
+    use PkPayPlus\Client;
+
+    $pk = new Client(); // reads PKPAYPLUS_SECRET_KEY from env
+
+    $product = $pk->products()->create([
+        'name'        => 'My First Product',
+        'description' => 'A sample product',
+        'status'      => 'published',
+        'currency'    => 'USD',
+        'unit_amount' => 2999, // $29.99 in cents
+    ]);
+
+    echo $product['product']['id']; // your new product ID
+    ```
+
+    The `unit_amount` field is always in the **smallest currency unit** (cents for USD). A value of `2999` equals $29.99. Save the returned product ID — you will use it to associate products with checkout sessions.
+
+    <Info>
+      You can also create and manage products directly from the merchant dashboard without writing any code.
+    </Info>
+  </Step>
+
+  <Step title="Create a checkout session">
+    A **checkout session** represents a single payment intent. Create one to generate a hosted checkout page your customer can pay through:
+
+    ```php
+    <?php
+    require __DIR__ . '/vendor/autoload.php';
+    use PkPayPlus\Client;
+
+    $pk = new Client();
+
+    $merchantId = 'your_merchant_id'; // from Dashboard → API Keys
+
+    $session = $pk->sessions()->create($merchantId, [
+        'amount'      => 2999,         // $29.99 in cents
+        'currency'    => 'USD',
+        'description' => 'Order #1',
+        'source'      => 'custom_php',
+    ]);
+
+    $sessionId = $session['session_id'];
+    echo $sessionId; // store this to verify the payment later
+    ```
+
+    Redirect your customer to the hosted checkout URL returned in the session response so they can complete payment using their preferred method.
+  </Step>
+
+  <Step title="Verify the payment">
+    After your customer completes (or attempts) payment, verify the session status on your server:
+
+    ```php
+    $result = $pk->sessions()->verify($merchantId, $sessionId);
+
+    if ($result['status'] === 'paid') {
+        // Payment confirmed — fulfil the order
+        echo 'Payment successful!';
+    } else {
+        // Payment pending or failed
+        echo 'Payment status: ' . $result['status'];
+    }
+    ```
+
+    Always verify payment status server-side before fulfilling an order. Do not rely solely on client-side redirects to confirm payment.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## Next steps
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Learn how API key authentication works, how to pass keys securely, and how to handle auth errors.
+  </Card>
+  <Card title="PHP SDK Guide" icon="code" href="/integrations/php">
+    Explore the full PHP SDK reference — products, sessions, Laravel setup, and testing.
+  </Card>
+</CardGroup>

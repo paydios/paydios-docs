@@ -1,0 +1,215 @@
+---
+title: "Integrate PkPay+ with PHP Using the Official SDK"
+sidebarTitle: "PHP SDK"
+description: "Install and use the PkPay+ PHP SDK to manage products and checkout sessions in plain PHP. Requires PHP 8.1+ and Composer."
+---
+
+The PkPay+ PHP SDK lets you integrate payment processing into any PHP application. It wraps the Merchant API and handles authentication, request formatting, and error handling for you — so you can manage products, create checkout sessions, and verify payments without writing raw HTTP calls.
+
+<Warning>
+  This SDK is for **server-side (merchant backend)** use only. Never expose your secret key in frontend code or commit it to version control.
+</Warning>
+
+## Requirements
+
+- PHP 8.1+
+- [Composer](https://getcomposer.org/)
+
+## Installation
+
+Install the SDK with Composer:
+
+```bash
+composer require pkpayplus/pkpayplus-php
+```
+
+## Configuration
+
+The SDK resolves configuration in this order:
+
+1. Config array passed directly to `Client`
+2. Environment variables (`PKPAYPLUS_SECRET_KEY`, `PKPAYPLUS_BASE_URL`)
+3. Default base URL (`https://api.pkpayplus.com`)
+
+This means you can rely on environment variables for credentials and only override when needed.
+
+### Environment variables (recommended)
+
+Create a `.env` file in your project root and add your secret key:
+
+```env
+PKPAYPLUS_SECRET_KEY=sk_live_xxxxxxxxx
+```
+
+<Tip>
+  Using environment variables keeps your credentials out of source code. Never commit your `.env` file to version control — add it to `.gitignore`.
+</Tip>
+
+### Passing config manually
+
+If you prefer to configure the client explicitly, pass an array when creating the instance:
+
+```php
+$pk = new Client([
+  'base_url'   => 'https://api.pkpayplus.com',
+  'secret_key' => 'sk_live_xxx'
+]);
+```
+
+## Quick Start
+
+Once the SDK is installed and your secret key is set in your environment, you can make your first API call:
+
+```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use PkPayPlus\Client;
+
+$pk = new Client();
+
+$products = $pk->products()->list(['per_page' => 20]);
+
+print_r($products);
+```
+
+## Authentication
+
+All Merchant API requests are authenticated with a Bearer token:
+
+```
+Authorization: Bearer {secret_key}
+```
+
+The SDK sets this header automatically using the secret key you provide. You never need to construct or attach authorization headers manually.
+
+## Products API
+
+The merchant identity is inferred from your secret key, so you do not need to pass a merchant ID to product endpoints. The SDK uses the following endpoints:
+
+| Method   | Endpoint                                    |
+|----------|---------------------------------------------|
+| `GET`    | `/merchant-api/products`                    |
+| `POST`   | `/merchant-api/products`                    |
+| `GET`    | `/merchant-api/products/{product_id}`       |
+| `PUT`    | `/merchant-api/products/{product_id}`       |
+| `DELETE` | `/merchant-api/products/{product_id}`       |
+
+### List products
+
+Retrieve a paginated list of your products. Use `search` to filter by keyword:
+
+```php
+$products = $pk->products()->list([
+  'per_page' => 20,
+  'page'     => 1,
+  'search'   => 'shirt'
+]);
+```
+
+### Create product
+
+Create a new product. Set `status` to `draft` to keep it unpublished until ready:
+
+```php
+$created = $pk->products()->create([
+  'name'        => 'Black T-Shirt',
+  'description' => 'Cotton tee',
+  'status'      => 'draft',
+  'currency'    => 'USD',
+  'unit_amount' => 1999
+]);
+
+$productId = $created['product']['id'];
+```
+
+### Get product
+
+Retrieve a single product by its ID:
+
+```php
+$product = $pk->products()->get($productId);
+```
+
+### Update product
+
+Update one or more fields on an existing product. Change `status` to `published` to make it live:
+
+```php
+$updated = $pk->products()->update($productId, [
+  'name'   => 'Black T-Shirt (Updated)',
+  'status' => 'published'
+]);
+```
+
+### Delete product
+
+Permanently delete a product:
+
+```php
+$pk->products()->delete($productId);
+```
+
+## Checkout Sessions
+
+Use checkout sessions for backend-driven payment flows. The session returns a `checkout_url` you can redirect your customer to, and a `session_id` you use to verify the result after payment.
+
+The SDK uses these endpoints:
+
+| Method  | Endpoint                                              |
+|---------|-------------------------------------------------------|
+| `POST`  | `/merchant-api/{merchant_id}/checkout-sessions`       |
+| `GET`   | `/merchant-api/{merchant_id}/{session_id}`            |
+
+### Create checkout session
+
+Create a session for a specific transaction. Pass your Merchant ID (available in the [merchant dashboard](https://merchant.pkpayplus.com/)):
+
+```php
+$session = $pk->sessions()->create($merchantId, [
+  'amount'      => 1999,
+  'currency'    => 'USD',
+  'description' => 'Order #1001',
+  'source'      => 'custom_php'
+]);
+
+$sessionId = $session['session_id'];
+```
+
+### Verify checkout session
+
+After the customer completes payment, verify the session status on your server:
+
+```php
+$status = $pk->sessions()->verify($merchantId, $sessionId);
+```
+
+## Common Errors
+
+### Missing secret key
+
+If the SDK cannot find a secret key, requests will fail with an authentication error. Make sure your environment includes:
+
+```env
+PKPAYPLUS_SECRET_KEY=sk_test_xxx
+```
+
+If you are passing config manually, confirm the `secret_key` key is present in the array passed to `Client`.
+
+## Security Notes
+
+- Never expose your **secret key** in frontend or client-side code.
+- Use the **publishable key** for client-side checkout flows.
+- Use the **secret key** only in your server-side backend code.
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="PkPay+ PHP SDK on GitHub" icon="github" href="https://github.com/pkpayplus/pkpayplus-php">
+    Browse the source code, open issues, and contribute to the SDK.
+  </Card>
+  <Card title="Packagist Package" icon="box" href="https://packagist.org/packages/pkpayplus/pkpayplus-php">
+    View the Composer package on Packagist for version history and install stats.
+  </Card>
+</CardGroup>

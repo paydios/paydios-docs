@@ -1,0 +1,76 @@
+---
+title: "View, Filter, and Export Transaction Records"
+sidebarTitle: "Transactions"
+description: "Access your full transaction history in PkPay+. Filter by status, date, amount, or payment method, and export records for reconciliation."
+---
+
+Every payment, refund, and failed attempt is recorded as a transaction in PkPay+. The **Transactions** section of your merchant dashboard gives you a complete, searchable history of all activity on your account — from the first payment you accepted to the most recent refund you issued. Use it to investigate payment issues, track revenue, manage refunds, and prepare reconciliation exports.
+
+## Transaction statuses
+
+Each transaction carries a status that reflects its current state in the payment lifecycle.
+
+| Status | Description |
+|---|---|
+| `paid` | Payment completed successfully. Funds are settled or pending settlement to your account. |
+| `pending` | Payment has been initiated and is awaiting confirmation from the card network or payment provider. |
+| `failed` | The payment attempt was declined by the card issuer or failed due to a processing error. The customer was not charged. |
+| `refunded` | A full or partial refund has been issued to the customer. |
+| `disputed` | The customer has raised a chargeback or dispute with their bank. See [Disputes](/disputes) for how to respond. |
+
+## Filtering transactions
+
+Use the filter controls at the top of the Transactions list to narrow your view. Available filters include:
+
+- **Date range** — select a start and end date to view transactions in a specific period
+- **Status** — filter by one or more statuses (e.g. show only `failed` or `disputed` transactions)
+- **Payment method** — filter by card type, wallet, or payment rail (e.g. Visa, Apple Pay, Bitcoin, PIX)
+- **Amount range** — set minimum and maximum transaction amounts
+- **Currency** — filter by any of the 135+ supported currencies
+- **Customer name or email** — search for all transactions linked to a specific customer
+
+You can combine multiple filters at once. The list updates in real time as you adjust your criteria.
+
+## Transaction details
+
+Click any transaction in the list to open its full detail view. The detail page shows:
+
+- **Amount and currency** — the exact charge amount in the transaction currency
+- **Payment method** — card brand, last four digits, or wallet / payment rail used
+- **Customer information** — name, email, and billing address
+- **Timestamp** — date and time the transaction was created and last updated
+- **Session ID** — the checkout session identifier, useful for debugging API integrations
+- **Raw response data** — the full response from the payment processor, including authorization codes and decline reasons for failed payments
+
+## Issuing a refund
+
+You can issue a full or partial refund on any `paid` transaction directly from the dashboard.
+
+<Steps>
+  <Step title="Open the transaction">
+    In the **Transactions** list, click the transaction you want to refund to open its detail page.
+  </Step>
+  <Step title="Click Refund">
+    Select the **Refund** button on the transaction detail page.
+  </Step>
+  <Step title="Choose the refund amount">
+    Select **Full refund** to return the entire transaction amount, or enter a specific amount for a **partial refund**. Partial refunds can be issued multiple times up to the original transaction total.
+  </Step>
+  <Step title="Confirm the refund">
+    Review the refund details and confirm. The refund is processed immediately. Funds typically appear in the customer's account within **5–10 business days**, depending on their card issuer or payment provider.
+  </Step>
+</Steps>
+
+<Note>
+  Issuing a refund does not automatically cancel an open dispute. If the customer has already raised a chargeback, the refund and the dispute are handled as separate processes. See [Disputes](/disputes) for more information.
+</Note>
+
+## Exporting transactions
+
+To export your transaction data for accounting or reconciliation, apply the filters you need to narrow the result set, then click **Export**. PkPay+ generates a CSV file containing all matching transaction records, including amounts, statuses, payment methods, customer details, and timestamps.
+
+Export the filtered set rather than the full history to keep files manageable and directly relevant to the period or report you're preparing.
+
+<Tip>
+  Use transaction exports alongside your payout reports for end-of-month reconciliation. Filter transactions by the same date range as your payout period to match settled amounts against the funds received in your bank account.
+</Tip>

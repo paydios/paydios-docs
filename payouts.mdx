@@ -1,0 +1,77 @@
+---
+title: "Receive Payouts and Manage Settlements"
+sidebarTitle: "Payouts"
+description: "Understand how PkPay+ settles your collected payments. Configure bank accounts, payout schedules, and track every transfer in the dashboard."
+---
+
+Once your customers pay, PkPay+ holds the collected funds in your merchant balance and then settles them to your bank account on a predictable schedule. This page explains how the payout process works, which fees are deducted before settlement, and how to configure your payout destination and schedule.
+
+## How payouts work
+
+1. **Customer completes a payment** — funds are captured and appear in your PkPay+ merchant balance.
+2. **Funds are held in your merchant balance** — PkPay+ aggregates payments collected during the settlement period.
+3. **Applicable fees are netted** — PkPay+ deducts processing and settlement fees from the gross balance before payout (see [Payout fees](#payout-fees) below).
+4. **Net balance is transferred to your bank account** — per your configured payout schedule.
+
+## Payout schedule
+
+Startup and Professional plan merchants receive **next-day payouts** (T+1) as standard — funds collected today are transferred to your bank account the next business day.
+
+Enterprise plan merchants can negotiate a custom settlement schedule, including **instant payouts** or bespoke rolling windows tailored to your volume and risk profile.
+
+<Note>
+  Standard processing time is **T+1 (next business day)**. Payouts initiated on a Friday settle on Monday. Public holidays in your bank's jurisdiction may add one additional business day.
+</Note>
+
+## Payout fees
+
+The following fees are deducted from your gross balance before each payout. They apply across all plans in addition to the plan's processing fee.
+
+| Fee Type                          | Rate   |
+| --------------------------------- | ------ |
+| Payout / Settlement Fee           | 2.00%  |
+| Fraud & Risk Assessment Fee       | 2.00%  |
+| GST / Tax Fee                     | 1.00%  |
+| Revenue Protection & Recovery     | 1.50%  |
+
+For example, on a $1,000 gross payout: $20.00 settlement, $20.00 fraud & risk, $10.00 GST, and $15.00 revenue protection are deducted, leaving a **$935.00 net payout** before the plan's transaction processing fee.
+
+## Add a bank account
+
+<Steps>
+  <Step title="Open Payout Settings">
+    Log in to [merchant.pkpayplus.com](https://merchant.pkpayplus.com/) and navigate to **Settings → Payouts**.
+  </Step>
+  <Step title="Click Add Bank Account">
+    Select **Add Bank Account** and choose your account type — domestic (routing + account number) or international (IBAN + BIC/SWIFT).
+  </Step>
+  <Step title="Enter your account details">
+    Provide the required bank account information:
+    - **Account holder name** — must match the name on the bank account
+    - **Routing number** (US) or **IBAN** (international)
+    - **Account number** or **BIC/SWIFT code**
+    - **Bank country and currency**
+  </Step>
+  <Step title="Verify via micro-deposit">
+    PkPay+ sends two small micro-deposits (each under $1.00) to your account within **1–2 business days**. Return to **Settings → Payouts** and enter the exact amounts to verify ownership.
+  </Step>
+  <Step title="Set as default payout destination">
+    Once verified, click **Set as Default** to make this account your primary settlement destination. You can add multiple accounts and switch between them at any time.
+  </Step>
+</Steps>
+
+## Track payouts
+
+Open the **Payouts** tab in the dashboard to see a full history of every transfer. Each payout entry shows:
+
+- **Status** — `scheduled`, `in_transit`, or `paid`
+- **Gross amount** — total collected before fees
+- **Net amount** — the amount actually transferred to your bank
+- **Settlement date** — the date funds were sent
+- **Linked transactions** — drill down to see every individual payment included in the payout
+
+Use the date-range filter and CSV export to produce payout reports for your accounting records.
+
+<Info>
+  For high-volume needs, Enterprise plans include custom settlement terms, negotiated payout fees, and a dedicated support engineer to manage your account. Reach out at [support@pkpayplus.com](mailto:support@pkpayplus.com) to discuss Enterprise pricing.
+</Info>

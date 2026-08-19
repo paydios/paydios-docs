@@ -1,0 +1,90 @@
+{
+  "projectType": "saas",
+  "projectName": "PkPay+",
+  "projectDescription": "PkPay+ (Paydios) is a merchant payments platform that lets businesses accept global payments, manage subscriptions, send payouts, and integrate checkout flows via REST APIs and official SDKs.",
+  "theme": "luma",
+  "primaryColor": "#081028",
+  "lightColor": "#7c7c7c",
+  "darkColor": "#c9c9c9",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "authentication"
+            ]
+          },
+          {
+            "group": "Core Features",
+            "pages": [
+              "accept-payments",
+              "payment-links",
+              "subscriptions",
+              "invoicing",
+              "payouts"
+            ]
+          },
+          {
+            "group": "Merchant Account",
+            "pages": [
+              "merchant-id",
+              "merchant-api-keys",
+              "customers",
+              "transactions",
+              "disputes"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/php",
+              "integrations/laravel",
+              "integrations/wordpress"
+            ]
+          },
+          {
+            "group": "Platform & Security",
+            "pages": [
+              "security",
+              "pricing"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Global payment acceptance across 135+ currencies and 20+ card providers",
+    "Hosted checkout pages and embeddable payment links",
+    "Recurring billing and subscription management",
+    "Automated invoicing with smart reminders and auto-reconciliation",
+    "Merchant payouts with next-day settlement",
+    "Built-in fraud detection and chargeback dispute management",
+    "PCI DSS Level 1 compliant infrastructure",
+    "REST API with PHP SDK and Laravel support",
+    "Real-time merchant dashboard with analytics",
+    "Multi-currency support including crypto (BTC, ETH, USDT) and local rails (PIX, SEPA)"
+  ],
+  "publicApiSurface": [
+    "GET /merchant-api/products",
+    "POST /merchant-api/products",
+    "GET /merchant-api/products/{product_id}",
+    "PUT /merchant-api/products/{product_id}",
+    "DELETE /merchant-api/products/{product_id}",
+    "POST /merchant-api/{merchant_id}/checkout-sessions",
+    "GET /merchant-api/{merchant_id}/{session_id}",
+    "Authorization: Bearer {secret_key}",
+    "PkPayPlus\\Client::products()->list()",
+    "PkPayPlus\\Client::products()->create()",
+    "PkPayPlus\\Client::products()->get()",
+    "PkPayPlus\\Client::products()->update()",
+    "PkPayPlus\\Client::products()->delete()",
+    "PkPayPlus\\Client::sessions()->create()",
+    "PkPayPlus\\Client::sessions()->verify()"
+  ]
+}

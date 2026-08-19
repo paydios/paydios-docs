@@ -1,0 +1,75 @@
+---
+title: "Find and Use Your PkPay+ Merchant ID"
+sidebarTitle: "Merchant ID"
+description: "Your Merchant ID uniquely identifies your PkPay+ account in API requests. Learn where to find it and how to use it in checkout sessions and webhooks."
+---
+
+Your Merchant ID is a unique identifier assigned to your PkPay+ account. It's required in certain API paths — most notably when creating and verifying checkout sessions — and appears in webhook payloads to identify which merchant account an event belongs to. Unlike your secret key, it's an account identifier rather than a credential.
+
+## Where to find your Merchant ID
+
+<Steps>
+  <Step title="Log in to your dashboard">
+    Navigate to [https://merchant.pkpayplus.com/](https://merchant.pkpayplus.com/) and sign in with your account credentials.
+  </Step>
+  <Step title="Open Settings or Account">
+    Click your account name or the **Settings** link in the navigation menu.
+  </Step>
+  <Step title="Copy your Merchant ID">
+    Your Merchant ID is listed under **Account Information**. It follows the format `mcht_xxxxxxxxxxxxxxxx`. You can also find it on the **API Keys** page in the dashboard.
+  </Step>
+</Steps>
+
+## Using your Merchant ID in API calls
+
+The Merchant ID appears as a path parameter in checkout-related endpoints. Pass it exactly as it appears in your dashboard — including the `mcht_` prefix.
+
+```bash
+# Create a checkout session
+POST https://api.pkpayplus.com/merchant-api/{merchant_id}/checkout-sessions
+
+# Verify a checkout session
+GET  https://api.pkpayplus.com/merchant-api/{merchant_id}/{session_id}
+```
+
+In the PHP SDK, pass your Merchant ID as the first argument to `$pk->sessions()->create()` and `$pk->sessions()->verify()`:
+
+```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use PkPayPlus\Client;
+
+$pk = new Client(['secret_key' => 'sk_live_xxxxxxxxx']);
+
+$merchantId = 'mcht_xxxxxxxxxxxxxxxx'; // your Merchant ID from the dashboard
+
+// Create a checkout session
+$session = $pk->sessions()->create($merchantId, [
+    'amount'      => 1999,
+    'currency'    => 'USD',
+    'description' => 'Order #1001',
+    'source'      => 'custom_php',
+]);
+
+// Verify the session after payment
+$verified = $pk->sessions()->verify($merchantId, $session['session_id']);
+```
+
+## Merchant ID vs API Key
+
+Use this table to understand the difference between your Merchant ID and your Secret Key, and when each is required.
+
+| Property | Merchant ID | Secret Key |
+|---|---|---|
+| **Format** | `mcht_xxxxxxxxxxxxxxxx` | `sk_live_xxxxxxxxx` |
+| **Purpose** | Identifies your account | Authenticates your requests |
+| **Where used** | URL path parameters | `Authorization: Bearer` header |
+| **Sensitivity** | Identifier — not a secret | Credential — treat like a password |
+| **Safe to log?** | Yes | **No** — never log or expose |
+| **Found in** | Dashboard → Account / API Keys | Dashboard → API Keys (shown once) |
+
+<Warning>
+  Your Secret Key grants full API access to your merchant account. Keep it in environment variables on your server and never include it in client-side code, URLs, or logs. Your Merchant ID is an identifier and does not need the same level of protection, but your Secret Key always does.
+</Warning>

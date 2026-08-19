@@ -1,0 +1,82 @@
+---
+title: "Set Up Recurring Billing and Subscriptions"
+sidebarTitle: "Subscriptions"
+description: "Automate recurring revenue with PkPay+ subscriptions. Create billing plans, manage subscriber lifecycles, and reduce churn with smart dunning."
+---
+
+PkPay+ subscriptions let you charge customers on a recurring schedule — weekly, monthly, or annually — without any manual billing work. Once a subscriber signs up, PkPay+ handles every subsequent charge, retries failed payments automatically, and gives you real-time visibility into your recurring revenue.
+
+## Subscription billing models
+
+Choose the billing model that fits your business. PkPay+ supports all major recurring pricing structures out of the box.
+
+<CardGroup cols={2}>
+  <Card title="Flat-Rate" icon="dollar-sign">
+    Charge a fixed amount every billing cycle — the simplest model for most SaaS and membership products. Every subscriber pays the same price regardless of usage.
+  </Card>
+  <Card title="Usage-Based" icon="chart-line">
+    Bill customers based on what they actually consume each cycle — ideal for API calls, seats activated, or data processed. Meters reset each billing period.
+  </Card>
+  <Card title="Tiered Pricing" icon="layer-group">
+    Apply different rates at different volume thresholds. For example, the first 100 units at $0.10 each, the next 400 at $0.08, and everything above 500 at $0.05.
+  </Card>
+  <Card title="Per-Seat" icon="users">
+    Charge per user, licence, or active account. Perfect for team tools where the cost scales with the number of people using the product.
+  </Card>
+</CardGroup>
+
+## Creating a subscription plan
+
+<Steps>
+  <Step title="Open Subscriptions in the dashboard">
+    Log in to [merchant.pkpayplus.com](https://merchant.pkpayplus.com/) and select **Subscriptions** from the sidebar.
+  </Step>
+  <Step title="Create a new plan">
+    Click **New Plan** and configure:
+    - **Plan name** — visible to subscribers at checkout
+    - **Billing cycle** — weekly, monthly, quarterly, or annual
+    - **Amount and currency** — the recurring charge per cycle
+    - **Trial period** — optional free trial before billing begins
+    - **Billing model** — flat-rate, usage-based, tiered, or per-seat
+  </Step>
+  <Step title="Share the subscribe link or integrate via API">
+    Copy the hosted subscribe link to share directly, or use the API to embed the subscription sign-up flow in your own application.
+  </Step>
+  <Step title="Subscribers bill automatically">
+    PkPay+ charges each subscriber on their renewal date and updates their status in real time. You receive a dashboard notification and transaction record for every successful charge.
+  </Step>
+</Steps>
+
+## Managing subscribers
+
+From the Subscriptions dashboard you can take the following actions on any active subscriber:
+
+- **Upgrade or downgrade plan** — move a subscriber to a different plan with automatic proration applied
+- **Apply proration** — credit or charge the difference when changing plans mid-cycle
+- **Pause subscription** — temporarily suspend billing without cancelling the subscription
+- **Cancel at end of period** — keep access active until the current period expires, then stop billing
+- **Cancel immediately** — terminate the subscription and stop billing right away
+- **View billing history** — see every invoice, charge, and refund for each subscriber
+
+## Smart dunning & recovery
+
+Failed payments are one of the biggest drivers of involuntary churn. PkPay+'s smart dunning engine minimises that loss automatically.
+
+- **Optimised retry logic** — PkPay+ retries failed charges at intervals calibrated to maximise recovery without annoying the customer
+- **Card update reminders** — automated emails prompt subscribers to update expired or replaced card details before a charge fails
+- **Escalation rules** — configure how many retry attempts to make before downgrading or cancelling an account
+- **Recovery rate** — PkPay+'s dunning engine achieves a **99.4% dunning success rate** for merchants with active retry rules enabled
+
+## Subscription analytics
+
+Track your recurring revenue health directly from the dashboard. The following metrics are available in real time:
+
+- **MRR (Monthly Recurring Revenue)** and **ARR (Annual Recurring Revenue)**
+- **LTV (Customer Lifetime Value)** by plan and cohort
+- **Churn rate** — monthly and rolling averages
+- **Active subscriber cohorts** — retention curves from sign-up date
+- **Financial reporting** — exportable breakdowns for accounting and forecasting
+
+<Info>
+  Full subscription API reference is coming soon. Create and manage all subscription plans and subscriber records through the dashboard today, with no code required.
+</Info>

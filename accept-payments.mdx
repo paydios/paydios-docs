@@ -1,0 +1,140 @@
+---
+title: "Accept Online Payments with PkPay+ Checkout"
+sidebarTitle: "Accept Payments"
+description: "Create checkout sessions, redirect customers to hosted checkout, and handle payment success or failure using the PkPay+ API or PHP SDK."
+---
+
+PkPay+ lets you accept one-time payments globally through hosted checkout sessions. Create a session server-side, redirect your customer to the PkPay+-hosted checkout page, and then verify the result — all without building or maintaining your own payment UI.
+
+## How checkout works
+
+1. **Create a checkout session** server-side using the PkPay+ API or PHP SDK.
+2. **Redirect the customer** to the `checkout_url` returned in the session response.
+3. **Customer pays** using their preferred method — card, wallet, crypto, or local rail.
+4. **Verify the session** by polling the verify endpoint or listening for a webhook notification to confirm payment status.
+
+## Create a checkout session
+
+Call the sessions endpoint with your merchant ID, the amount in the smallest currency unit (e.g. cents for USD), currency, and an optional description.
+
+<Tabs>
+  <Tab title="PHP SDK">
+    ```php
+    use PkPayPlus\Client;
+
+    $pk = new Client(['secret_key' => 'sk_live_xxx']);
+
+    $session = $pk->sessions()->create($merchantId, [
+        'amount'      => 2999,          // amount in cents
+        'currency'    => 'USD',
+        'description' => 'Order #1042',
+        'source'      => 'custom_php',
+    ]);
+
+    $sessionId   = $session['session_id'];
+    $checkoutUrl = $session['checkout_url']; // redirect your customer here
+    ```
+  </Tab>
+  <Tab title="cURL">
+    ```bash
+    curl -X POST https://api.pkpayplus.com/merchant-api/{merchant_id}/checkout-sessions \
+      -H "Authorization: Bearer sk_live_xxx" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "amount": 2999,
+        "currency": "USD",
+        "description": "Order #1042",
+        "source": "custom_php"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+## Request parameters
+
+<ParamField body="amount" type="integer" required>
+  The payment amount in the **smallest currency unit** — for example, cents for USD. To charge $29.99, send `2999`.
+</ParamField>
+
+<ParamField body="currency" type="string" required>
+  ISO 4217 currency code, e.g. `USD`, `EUR`, `GBP`. PkPay+ supports 135+ currencies.
+</ParamField>
+
+<ParamField body="description" type="string">
+  A human-readable description of the purchase shown to the customer on the checkout page, e.g. `Order #1042`.
+</ParamField>
+
+<ParamField body="source" type="string">
+  An optional identifier for the integration source, used to tag sessions in the dashboard. For example, `custom_php`, `wordpress`, or `laravel`.
+</ParamField>
+
+## Verify payment status
+
+After the customer completes checkout, verify the session to confirm whether the payment succeeded.
+
+<Tabs>
+  <Tab title="PHP SDK">
+    ```php
+    $status = $pk->sessions()->verify($merchantId, $sessionId);
+
+    if ($status['status'] === 'paid') {
+        // fulfil the order
+    } elseif ($status['status'] === 'pending') {
+        // payment is still processing — check again shortly
+    } else {
+        // payment failed — prompt the customer to retry
+    }
+    ```
+  </Tab>
+  <Tab title="cURL">
+    ```bash
+    curl -X GET https://api.pkpayplus.com/merchant-api/{merchant_id}/{session_id} \
+      -H "Authorization: Bearer sk_live_xxx"
+    ```
+  </Tab>
+</Tabs>
+
+The response includes a `status` field with one of the following values:
+
+| Status    | Meaning                                                   |
+| --------- | --------------------------------------------------------- |
+| `paid`    | Payment completed successfully. Safe to fulfil the order. |
+| `pending` | Payment is still processing. Poll again after a short delay. |
+| `failed`  | Payment was not completed. Prompt the customer to retry.  |
+
+## Supported payment methods
+
+PkPay+ automatically shows all available payment methods at checkout based on your customer's location and device.
+
+**Credit & Debit Cards**
+- Visa
+- Mastercard
+- American Express
+- JCB
+- Discover
+- Diners Club
+- Maestro
+
+**Digital Wallets**
+- Google Pay
+- Apple Pay
+- Revolut Pay
+
+**Cryptocurrencies**
+- Bitcoin (BTC)
+- Ethereum (ETH)
+- Solana (SOL)
+- Tether (USDT)
+- USD Coin (USDC)
+- TRON (TRX)
+- BNB Chain (BNB)
+
+**Local Rails**
+- PIX — Brazil instant bank transfer
+
+**Buy Now, Pay Later**
+- Klarna BNPL — available in Europe and the US
+
+<Tip>
+  Use webhooks (coming soon) for automated, real-time payment notifications instead of polling the verify endpoint. Webhooks fire the moment a payment status changes, making them the recommended approach for production fulfilment flows.
+</Tip>

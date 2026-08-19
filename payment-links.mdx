@@ -1,0 +1,78 @@
+---
+title: "Create and Share Payment Links Without Code"
+sidebarTitle: "Payment Links"
+description: "Generate shareable payment links from the PkPay+ dashboard. Send them via email, embed them in your site, or share on social — no coding required."
+---
+
+Payment Links let you collect money from customers without writing a single line of integration code. Create a link directly in the PkPay+ dashboard, share it anywhere you reach your audience, and PkPay+ takes care of the hosted checkout experience end to end.
+
+## Creating a payment link
+
+<Steps>
+  <Step title="Log in to the merchant dashboard">
+    Navigate to [merchant.pkpayplus.com](https://merchant.pkpayplus.com/) and sign in to your account.
+  </Step>
+  <Step title="Navigate to Payment Links">
+    In the left-hand sidebar, click **Payment Links** to open the links management screen.
+  </Step>
+  <Step title="Click New Payment Link">
+    Select **New Payment Link** in the top-right corner to open the link builder.
+  </Step>
+  <Step title="Configure your link">
+    Fill in the payment details:
+    - **Amount** — fixed charge or let the customer enter their own amount
+    - **Currency** — choose from 135+ supported currencies
+    - **Description / Product name** — shown to the customer at checkout
+    - **Success URL** — where to redirect the customer after a successful payment
+    - **Failure URL** — where to redirect on a failed or cancelled payment
+    - **Expiry date** — optionally set a date after which the link stops accepting payments
+  </Step>
+  <Step title="Copy and share the link">
+    Click **Generate Link**. Copy the URL that appears — it is live and ready to share immediately.
+  </Step>
+</Steps>
+
+## What you can customize
+
+Every Payment Link supports the following configuration options:
+
+- **Fixed or variable amount** — charge a set price or let the payer enter any amount
+- **Currency** — any of the 135+ currencies supported by PkPay+
+- **Description or product name** — displayed prominently on the checkout page
+- **Success and failure redirect URLs** — control where the customer lands after checkout
+- **Link expiry date** — automatically deactivate the link after a specific date
+- **Optional product attachment** — link a product from your PkPay+ product catalogue
+
+## Sharing your link
+
+Once generated, you can distribute your Payment Link through any channel:
+
+- **Email** — paste the link directly into a message or invoice email
+- **SMS** — send a short payment request to a customer's phone
+- **Embed as a button** — wrap the link in an anchor tag on any HTML page
+- **Social media** — share on LinkedIn, Twitter/X, Instagram bio, or any platform
+- **QR code** — generate a QR code from the link for print materials, invoices, or events
+
+## Tracking payments
+
+Every Payment Link has its own analytics view inside the dashboard. Select any link to see:
+
+- **Views** — total times the checkout page was opened
+- **Conversions** — number of successful payments
+- **Total collected** — gross revenue attributed to this link
+- **Individual transactions** — each payment with its timestamp, amount, and status
+
+<Note>
+  Payment Links use the same hosted checkout as the API integration. Every payment method supported by PkPay+ — including cards, digital wallets, cryptocurrencies, PIX, and Klarna BNPL — is available to your customers through a Payment Link.
+</Note>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Accept Payments via API" icon="code" href="/accept-payments">
+    Integrate checkout sessions directly into your application using the REST API or PHP SDK.
+  </Card>
+  <Card title="View Transactions" icon="list" href="/transactions">
+    Monitor every payment, export reports, and track revenue in real time from the dashboard.
+  </Card>
+</CardGroup>

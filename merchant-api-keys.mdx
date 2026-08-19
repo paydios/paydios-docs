@@ -1,66 +1,73 @@
 ---
-title: "Create and Manage Your PkPay+ API Keys"
+title: "PkPay+ API Keys: Create, Rotate, and Secure"
 sidebarTitle: "API Keys"
-description: "Generate, rotate, and revoke PkPay+ API keys. Understand the difference between secret and publishable keys and how to secure them."
+description: "Manage your PkPay+ secret and publishable API keys. Learn how to create keys, use them in requests, rotate them, and keep them secure."
+icon: "key"
 ---
 
-API keys authenticate every request your application makes to the PkPay+ API. You create and manage them in the merchant dashboard, and they must be protected like passwords — a leaked secret key gives full API access to your merchant account. Treat them with the same care as database credentials.
+PkPay+ uses API keys to authenticate every request you make to the Merchant API. You have two types of key — a secret key for server-side calls and a publishable key for client-side checkout flows. This page explains the difference, how to create and manage your keys, and how to keep them secure.
 
 ## Key types
 
-PkPay+ provides two types of API keys. Use the right key for the right context.
-
 <CardGroup cols={2}>
   <Card title="Secret Key" icon="lock">
-    Prefixed with `sk_live_`. Grants full access to the PkPay+ API — products, sessions, payouts, and more. **Use only on your server.** Never include in frontend code, mobile apps, or version control.
+    Prefixed `sk_live_`. Grants full server-side access to all API resources — products, checkout sessions, verifications, and more. **Never expose this in frontend code.**
   </Card>
-  <Card title="Publishable Key" icon="key">
-    Limited to client-side checkout flows only. Safe to include in browser-facing code. Cannot perform sensitive operations such as creating products or initiating payouts.
+  <Card title="Publishable Key" icon="eye">
+    Safe to include in browser JavaScript and mobile apps. Scoped to client-side checkout operations only and does not grant access to server-side resources.
   </Card>
 </CardGroup>
 
-## Creating an API key
+## Finding your API keys
 
-<Steps>
-  <Step title="Open the API Keys page">
-    Navigate to [https://merchant.pkpayplus.com/dashboard/api-keys](https://merchant.pkpayplus.com/dashboard/api-keys) in your merchant dashboard.
-  </Step>
-  <Step title="Click Create New Key">
-    Select **Create New Key** and choose the key type (Secret or Publishable).
-  </Step>
-  <Step title="Name your key">
-    Give the key a descriptive label so you can identify it later — for example, `Production Backend` or `Staging Server`. You can have multiple keys with different labels.
-  </Step>
-  <Step title="Copy and store the key immediately">
-    Once generated, the full secret key value is shown **only once**. Copy it now and store it in a secure location such as a password manager or secrets vault. You cannot retrieve the key value again after closing this dialog.
-  </Step>
-  <Step title="Add the key to your server environment">
-    Set the key as an environment variable on your server. Never hardcode it in source files.
+Log in to the [PkPay+ dashboard](https://merchant.pkpayplus.com/dashboard/api-keys) and navigate to **Dashboard → API Keys**. Both keys are displayed on this page alongside your Merchant ID.
 
-    ```env
-    PKPAYPLUS_SECRET_KEY=sk_live_xxxxxxxxx
-    PKPAYPLUS_BASE_URL=https://api.pkpayplus.com
-    ```
-  </Step>
-</Steps>
+## Using your secret key in API requests
 
-## Using the key
-
-Pass your secret key in the `Authorization` header of every API request using the Bearer scheme:
+Pass your secret key as a Bearer token in the `Authorization` header of every server-side request:
 
 ```bash
 Authorization: Bearer sk_live_xxxxxxxxx
 ```
 
-A full example request using cURL:
+Here is a complete example using `curl` to list your products:
 
 ```bash
-curl -X GET https://api.pkpayplus.com/merchant-api/products \
-  -H "Authorization: Bearer sk_live_xxxxxxxxx" \
-  -H "Content-Type: application/json"
+curl https://api.pkpayplus.com/merchant-api/products \
+  -H "Authorization: Bearer sk_live_xxxxxxxxx"
 ```
 
-In the PHP SDK, the SDK reads the key from your environment variable automatically, or you can pass it explicitly at initialization:
+And an example that creates a checkout session (which also requires your Merchant ID in the path):
+
+```bash
+curl -X POST https://api.pkpayplus.com/merchant-api/{merchant_id}/checkout-sessions \
+  -H "Authorization: Bearer sk_live_xxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 2999,
+    "currency": "USD",
+    "description": "Order #1042",
+    "source": "custom_php"
+  }'
+```
+
+## Setting up your secret key as an environment variable
+
+Store your secret key in an environment variable rather than hard-coding it in source files. The PkPay+ PHP SDK reads this variable automatically.
+
+Add the following to your `.env` file:
+
+```env
+PKPAYPLUS_SECRET_KEY=sk_live_xxxxxxxxx
+```
+
+<Warning>
+  Never commit your `.env` file to version control. Add it to `.gitignore` immediately and check that it has not already been committed before pushing to a remote repository.
+</Warning>
+
+## Using your secret key with the PHP SDK
+
+Once `PKPAYPLUS_SECRET_KEY` is set in your environment, create the client without any arguments:
 
 ```php
 <?php
@@ -69,47 +76,67 @@ require __DIR__ . '/vendor/autoload.php';
 
 use PkPayPlus\Client;
 
-// Reads PKPAYPLUS_SECRET_KEY from environment automatically
-$pk = new Client();
-
-// Or pass explicitly (use env vars in production, not hardcoded strings)
-$pk = new Client(['secret_key' => getenv('PKPAYPLUS_SECRET_KEY')]);
+$pk = new Client(); // reads PKPAYPLUS_SECRET_KEY from env automatically
 ```
 
-## Rotating a key
+You can also pass the key explicitly if you prefer:
 
-Rotate your keys periodically, or immediately if you suspect a key has been compromised.
+```php
+$pk = new Client(['secret_key' => 'sk_live_xxxxxxxxx']);
+```
+
+In a Laravel application, register the key in `config/services.php`:
+
+```php
+// config/services.php
+'pkpayplus' => [
+    'base_url'   => env('PKPAYPLUS_BASE_URL', 'https://api.pkpayplus.com'),
+    'secret_key' => env('PKPAYPLUS_SECRET_KEY'),
+],
+```
+
+Then pass the config array to the client:
+
+```php
+$pk = new \PkPayPlus\Client(config('services.pkpayplus'));
+```
+
+## Rotating your API keys
+
+Rotate your secret key immediately if you suspect it has been compromised, or as part of a scheduled security review.
 
 <Steps>
-  <Step title="Create a replacement key">
-    In the dashboard, go to **API Keys** and create a new secret key. Label it clearly, for example `Production Backend v2`.
+  <Step title="Open the API Keys page">
+    Log in to [merchant.pkpayplus.com/dashboard/api-keys](https://merchant.pkpayplus.com/dashboard/api-keys).
   </Step>
-  <Step title="Update your server environment">
-    Replace the value of `PKPAYPLUS_SECRET_KEY` in your server's environment or secrets manager with the new key. Restart or redeploy your application as needed.
+  <Step title="Generate a new secret key">
+    Click **Generate new key**. Your new `sk_live_` key is displayed once — copy it immediately because it will not be shown again.
   </Step>
-  <Step title="Verify the new key works">
-    Make a test API call — such as listing products — to confirm the new key is accepted and your application is functioning correctly in production.
+  <Step title="Update all environments">
+    Replace the old key with the new one in every environment where it is used: local development, staging, and production. Update your hosting provider's secret management, CI/CD environment variables, and any other locations where the key is stored.
   </Step>
   <Step title="Revoke the old key">
-    Return to the dashboard **API Keys** page and revoke the previous key. Once revoked, any requests still using the old key will be rejected immediately.
+    Once all environments are updated and verified, revoke the old key from the dashboard. Requests using the revoked key will immediately return `401 Unauthorized`.
   </Step>
 </Steps>
 
+<Note>
+  There is no grace period after revoking a key. Make sure all environments are updated before you revoke the old key to avoid service disruption.
+</Note>
+
 ## Security rules
 
-<Warning>
-  A compromised secret key gives an attacker full access to your PkPay+ account, including payouts. If you suspect a key has been exposed, revoke it immediately and create a new one.
-</Warning>
+Follow these practices to keep your keys and account secure:
 
-Follow these rules to keep your keys secure:
+- **Use environment variables** — store `PKPAYPLUS_SECRET_KEY` in `.env` locally and your hosting provider's secret manager in production. Never hard-code key values in source files.
+- **Keep `.env` out of version control** — add `.env` to `.gitignore` and audit your repository history if you are unsure whether a key was previously committed.
+- **Use the publishable key for client-side code** — never use your secret key in browser JavaScript, mobile apps, or any code that runs on a customer's device.
+- **Limit access** — only the server processes and team members that genuinely need the secret key should have access to it.
+- **Rotate on suspicion** — if you see unexpected API activity or believe the key may have been exposed, rotate it immediately.
 
-- **Never commit keys to version control.** Add `.env` to your `.gitignore` and use a secrets manager for production.
-- **Never pass keys in URL query parameters.** Always use the `Authorization` header.
-- **Use environment variables.** Read keys from `getenv()` or your hosting platform's secrets store, not from hardcoded strings.
-- **Use separate keys per environment.** Create distinct keys for development, staging, and production so a leaked test key cannot affect live transactions.
-- **Revoke compromised keys immediately.** Do not wait — revoke first, investigate later.
-- **Limit key scope.** Use publishable keys for client-side integrations and reserve secret keys for server-side code only.
+## Authentication errors
 
-<Info>
-  Each secret key value is shown exactly once at creation. If you lose the value before storing it, revoke that key and generate a new one — there is no way to recover a key value after it is first displayed.
-</Info>
+| HTTP Status | Meaning | Resolution |
+|-------------|---------|------------|
+| `401 Unauthorized` | Missing, malformed, or revoked API key | Confirm the `Authorization: Bearer sk_live_...` header is present and the key has not been revoked |
+| `403 Forbidden` | Key lacks permission for the resource | Ensure you are using your secret key (not publishable key) for server-side endpoints |

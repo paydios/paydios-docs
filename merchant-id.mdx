@@ -1,38 +1,57 @@
 ---
-title: "Find and Use Your PkPay+ Merchant ID"
+title: "PkPay+ Merchant ID: Find and Use It"
 sidebarTitle: "Merchant ID"
-description: "Your Merchant ID uniquely identifies your PkPay+ account in API requests. Learn where to find it and how to use it in checkout sessions and webhooks."
+description: "Your PkPay+ Merchant ID identifies your account in API paths. Learn where to find it and how to use it in checkout session requests."
+icon: "fingerprint"
 ---
 
-Your Merchant ID is a unique identifier assigned to your PkPay+ account. It's required in certain API paths — most notably when creating and verifying checkout sessions — and appears in webhook payloads to identify which merchant account an event belongs to. Unlike your secret key, it's an account identifier rather than a credential.
+Your Merchant ID is the unique identifier for your PkPay+ merchant account. You need it in the URL path of certain API calls — specifically when creating and verifying checkout sessions. Unlike your API keys, the Merchant ID is not a secret and does not need to be hidden from logs or version control.
 
 ## Where to find your Merchant ID
 
-<Steps>
-  <Step title="Log in to your dashboard">
-    Navigate to [https://merchant.pkpayplus.com/](https://merchant.pkpayplus.com/) and sign in with your account credentials.
-  </Step>
-  <Step title="Open Settings or Account">
-    Click your account name or the **Settings** link in the navigation menu.
-  </Step>
-  <Step title="Copy your Merchant ID">
-    Your Merchant ID is listed under **Account Information**. It follows the format `mcht_xxxxxxxxxxxxxxxx`. You can also find it on the **API Keys** page in the dashboard.
-  </Step>
-</Steps>
+Log in to the [PkPay+ dashboard](https://merchant.pkpayplus.com/dashboard/api-keys) and navigate to **Dashboard → API Keys**. Your Merchant ID appears at the top of the page, above your API keys, in the format:
 
-## Using your Merchant ID in API calls
-
-The Merchant ID appears as a path parameter in checkout-related endpoints. Pass it exactly as it appears in your dashboard — including the `mcht_` prefix.
-
-```bash
-# Create a checkout session
-POST https://api.pkpayplus.com/merchant-api/{merchant_id}/checkout-sessions
-
-# Verify a checkout session
-GET  https://api.pkpayplus.com/merchant-api/{merchant_id}/{session_id}
+```text
+mid_xxxxxxxxxxxxxxxx
 ```
 
-In the PHP SDK, pass your Merchant ID as the first argument to `$pk->sessions()->create()` and `$pk->sessions()->verify()`:
+Copy it and store it alongside your other environment configuration.
+
+## Using your Merchant ID in API requests
+
+Two API endpoints require your Merchant ID in the URL path:
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| `POST` | `/merchant-api/{merchant_id}/checkout-sessions` | Create a checkout session |
+| `GET` | `/merchant-api/{merchant_id}/{session_id}` | Retrieve or verify a session |
+
+Replace `{merchant_id}` with your actual Merchant ID value. You still need to include your secret key as a Bearer token in the `Authorization` header.
+
+### Create a checkout session
+
+```bash
+curl -X POST https://api.pkpayplus.com/merchant-api/mid_xxxxxxxxxxxxxxxx/checkout-sessions \
+  -H "Authorization: Bearer sk_live_xxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 2999,
+    "currency": "USD",
+    "description": "Order #1042",
+    "source": "custom_php"
+  }'
+```
+
+### Verify a checkout session
+
+```bash
+curl https://api.pkpayplus.com/merchant-api/mid_xxxxxxxxxxxxxxxx/sess_xxxxxxxxxx \
+  -H "Authorization: Bearer sk_live_xxxxxxxxx"
+```
+
+## Using your Merchant ID with the PHP SDK
+
+The PHP SDK accepts your Merchant ID as an argument when calling session methods — you do not need to embed it in a URL manually.
 
 ```php
 <?php
@@ -41,35 +60,43 @@ require __DIR__ . '/vendor/autoload.php';
 
 use PkPayPlus\Client;
 
-$pk = new Client(['secret_key' => 'sk_live_xxxxxxxxx']);
+$pk = new Client(); // reads PKPAYPLUS_SECRET_KEY from .env automatically
 
-$merchantId = 'mcht_xxxxxxxxxxxxxxxx'; // your Merchant ID from the dashboard
+$merchantId = 'mid_xxxxxxxxxxxxxxxx';
 
 // Create a checkout session
 $session = $pk->sessions()->create($merchantId, [
-    'amount'      => 1999,
+    'amount'      => 2999,
     'currency'    => 'USD',
-    'description' => 'Order #1001',
+    'description' => 'Order #1042',
     'source'      => 'custom_php',
 ]);
 
-// Verify the session after payment
-$verified = $pk->sessions()->verify($merchantId, $session['session_id']);
+$sessionId = $session['session_id'];
+
+// Verify the session after the customer returns
+$status = $pk->sessions()->verify($merchantId, $sessionId);
+
+echo $status['status']; // e.g. "paid"
 ```
 
-## Merchant ID vs API Key
+<Tip>
+  Store your Merchant ID in an environment variable alongside your secret key so both are available to your application at runtime without being hard-coded.
 
-Use this table to understand the difference between your Merchant ID and your Secret Key, and when each is required.
+  ```env
+  PKPAYPLUS_SECRET_KEY=sk_live_xxxxxxxxx
+  PKPAYPLUS_MERCHANT_ID=mid_xxxxxxxxxxxxxxxx
+  ```
+</Tip>
 
-| Property | Merchant ID | Secret Key |
-|---|---|---|
-| **Format** | `mcht_xxxxxxxxxxxxxxxx` | `sk_live_xxxxxxxxx` |
-| **Purpose** | Identifies your account | Authenticates your requests |
-| **Where used** | URL path parameters | `Authorization: Bearer` header |
-| **Sensitivity** | Identifier — not a secret | Credential — treat like a password |
-| **Safe to log?** | Yes | **No** — never log or expose |
-| **Found in** | Dashboard → Account / API Keys | Dashboard → API Keys (shown once) |
+## Merchant ID vs. API keys
 
-<Warning>
-  Your Secret Key grants full API access to your merchant account. Keep it in environment variables on your server and never include it in client-side code, URLs, or logs. Your Merchant ID is an identifier and does not need the same level of protection, but your Secret Key always does.
-</Warning>
+| Credential | Purpose | Keep secret? |
+|------------|---------|-------------|
+| **Merchant ID** | Identifies your account in URL paths | No — safe to log and reference |
+| **Secret Key** (`sk_live_…`) | Authenticates all API requests | **Yes** — treat like a password |
+| **Publishable Key** | Client-side checkout operations | No — safe for browser code |
+
+<Note>
+  Your Merchant ID does not change. You do not need to rotate it. If you believe your account has been compromised, rotate your **API keys** (not your Merchant ID) from the dashboard.
+</Note>

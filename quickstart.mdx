@@ -1,10 +1,10 @@
 ---
-title: "Get Started with PkPay+ in Under 10 Minutes"
+title: "PkPay+ Quickstart: Make Your First Payment Request"
 sidebarTitle: "Quickstart"
-description: "Create your PkPay+ merchant account, get your API key, and make your first payment API call or PHP SDK request in minutes."
+description: "Create your PkPay+ merchant account, retrieve your API key, and make your first product creation and checkout session request in minutes."
 ---
 
-This page walks you through everything you need to go from zero to your first live payment request. By the end you will have a merchant account, a working API key, a product in the system, and a checkout session ready to accept payments — using either the PHP SDK or raw REST calls.
+This page walks you through everything you need to go from zero to your first live payment request. By the end you will have a merchant account, a working API key, a product in the system, and a checkout session ready to accept payments. All code examples use the PHP SDK. If you prefer raw REST calls, see the [Authentication](/authentication) guide for `curl` examples.
 
 <Steps>
   <Step title="Create your account">
@@ -26,8 +26,8 @@ This page walks you through everything you need to go from zero to your first li
     </Warning>
   </Step>
 
-  <Step title="Install the PHP SDK (or use REST directly)">
-    If you are using PHP, install the official SDK with Composer:
+  <Step title="Install the PHP SDK">
+    Install the official PkPay+ PHP SDK with Composer:
 
     ```bash
     composer require pkpayplus/pkpayplus-php
@@ -39,7 +39,7 @@ This page walks you through everything you need to go from zero to your first li
     PKPAYPLUS_SECRET_KEY=sk_live_xxxxxxxxx
     ```
 
-    Do not commit your `.env` file to version control. If you prefer to call the REST API directly without the SDK, skip this step and use the `curl` examples in the [Authentication](/authentication) guide.
+    Do not commit your `.env` file to version control.
   </Step>
 
   <Step title="Create your first product">
@@ -89,11 +89,11 @@ This page walks you through everything you need to go from zero to your first li
         'source'      => 'custom_php',
     ]);
 
-    $sessionId = $session['session_id'];
-    echo $sessionId; // store this to verify the payment later
+    $sessionId   = $session['session_id'];
+    $checkoutUrl = $session['checkout_url']; // redirect your customer here
     ```
 
-    Redirect your customer to the hosted checkout URL returned in the session response so they can complete payment using their preferred method.
+    Redirect your customer to `$checkoutUrl` so they can complete payment using their preferred method — card, wallet, crypto, or local rail. Store `$sessionId` to verify the payment status afterwards.
   </Step>
 
   <Step title="Verify the payment">

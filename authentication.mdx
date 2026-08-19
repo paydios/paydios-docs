@@ -1,7 +1,7 @@
 ---
-title: "Authenticate API Requests with PkPay+ API Keys"
+title: "PkPay+ API Authentication: Bearer Tokens and SDK Auth"
 sidebarTitle: "Authentication"
-description: "PkPay+ uses Bearer token authentication. Learn how to get your API keys, pass them in requests, and keep them secure."
+description: "PkPay+ authenticates every API request with Bearer token API keys. Learn how to pass keys securely, use the PHP SDK auto-auth, and handle auth errors."
 ---
 
 PkPay+ authenticates every API request using API keys passed as Bearer tokens in the `Authorization` HTTP header. There are no sessions, cookies, or OAuth flows — every request is authenticated independently using the key you provide. Your keys are scoped to your merchant account and grant access to all resources within it, so keeping them secure is essential.
@@ -10,15 +10,9 @@ PkPay+ authenticates every API request using API keys passed as Bearer tokens in
 
 Log in to the merchant dashboard and navigate to **Dashboard → API Keys** at [merchant.pkpayplus.com/dashboard/api-keys](https://merchant.pkpayplus.com/dashboard/api-keys). You will find two types of credential:
 
-<ParamField body="Secret Key" type="string" required>
-  Format: `sk_live_xxxxxxxxx`
+**Secret Key** (`sk_live_xxxxxxxxx`) — your secret key grants full server-side access to all API resources: creating products, opening checkout sessions, verifying payments, and more. Use this key **only on your server**. Never expose it in frontend code, browser-side JavaScript, mobile apps, or public repositories.
 
-  Your secret key grants full server-side access to all API resources — creating products, opening checkout sessions, verifying payments, and more. Use this key **only on your server**. Never expose it in frontend code, browser-side JavaScript, mobile apps, or public repositories.
-</ParamField>
-
-<ParamField body="Publishable Key" type="string">
-  Your publishable key is safe to include in client-side code and is intended for use in browser or mobile-based checkout flows only. It does not grant access to server-side resources.
-</ParamField>
+**Publishable Key** — your publishable key is safe to include in client-side code and is intended for browser or mobile-based checkout flows only. It does not grant access to server-side resources.
 
 You will also find your **Merchant ID** on the same page. Some API endpoints (such as checkout session creation and verification) require your Merchant ID in the URL path alongside your secret key in the header.
 
@@ -82,7 +76,7 @@ In Laravel, register your credentials in `config/services.php` and pass them to 
 ```php
 // config/services.php
 'pkpayplus' => [
-    'base_url'   => env('PKPAYPLUS_BASE_URL', 'https://api.pkpayplus.com'),
+    'base_url'   => env('PKPAYPLUS_BASE_URL'),
     'secret_key' => env('PKPAYPLUS_SECRET_KEY'),
 ],
 ```
@@ -115,5 +109,5 @@ If a request fails due to an authentication problem, PkPay+ returns a standard H
 | `403 Forbidden` | Insufficient permissions | The API key is valid but does not have permission to access the requested resource. Ensure you are using your Secret Key (not Publishable Key) for server-side endpoints. |
 
 <Tip>
-  If you receive a `401` error after recently rotating your keys, make sure you have updated all environments (staging, production, CI/CD pipelines) with the new key value.
+  If you receive a `401` error after recently rotating your keys, make sure you have updated the new key value in every server environment where it is used — staging, production, and any automated deployment pipelines.
 </Tip>

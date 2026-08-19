@@ -1,7 +1,7 @@
 ---
-title: "Integrate PkPay+ with PHP Using the Official SDK"
+title: "PkPay+ PHP SDK: Manage Products and Checkout Sessions"
 sidebarTitle: "PHP SDK"
-description: "Install and use the PkPay+ PHP SDK to manage products and checkout sessions in plain PHP. Requires PHP 8.1+ and Composer."
+description: "Install the official PkPay+ PHP SDK with Composer to manage products, create checkout sessions, and verify payments. Requires PHP 8.1+."
 ---
 
 The PkPay+ PHP SDK lets you integrate payment processing into any PHP application. It wraps the Merchant API and handles authentication, request formatting, and error handling for you — so you can manage products, create checkout sessions, and verify payments without writing raw HTTP calls.
@@ -184,6 +184,36 @@ After the customer completes payment, verify the session status on your server:
 ```php
 $status = $pk->sessions()->verify($merchantId, $sessionId);
 ```
+
+## Testing
+
+The SDK ships with unit tests (mocked HTTP) and optional integration tests that run against a real API.
+
+### Run unit tests
+
+```bash
+./vendor/bin/phpunit
+```
+
+### Integration tests (real API)
+
+Integration tests are skipped unless you explicitly enable them. Add the following to your `.env`:
+
+```env
+PKPAYPLUS_INTEGRATION=1
+PKPAYPLUS_BASE_URL=http://localhost:8000
+PKPAYPLUS_SECRET_KEY=sk_test_xxx
+```
+
+Then run:
+
+```bash
+./vendor/bin/phpunit tests/Integration/ProductsIntegrationTest.php --testdox
+```
+
+## Laravel Usage
+
+For Laravel-specific setup — including `config/services.php` registration, controller examples, and the singleton pattern — see the dedicated [Laravel integration guide](/integrations/laravel).
 
 ## Common Errors
 

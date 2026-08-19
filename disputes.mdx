@@ -1,105 +1,181 @@
 ---
-title: "Respond to Payment Disputes and Chargebacks"
+title: "Manage Payment Disputes and Chargebacks in PkPay+"
 sidebarTitle: "Disputes"
-description: "Understand how chargebacks work in PkPay+ and how to respond with evidence to protect your revenue. Track dispute status in the dashboard."
+description: "Understand the PkPay+ dispute lifecycle, respond to chargebacks within deadlines, submit evidence, and follow prevention tips to reduce dispute rates."
+icon: "scale"
 ---
 
-A dispute — also called a chargeback — occurs when a customer contacts their bank or card issuer to reverse a charge rather than resolving the issue directly with you. PkPay+ notifies you when a dispute is filed and gives you the tools to respond with evidence, track the outcome, and protect your revenue. Acting quickly and providing strong evidence is the most effective way to win a dispute.
+A dispute — also called a chargeback — occurs when a customer contacts their bank or card issuer to reverse a payment rather than requesting a refund directly from you. PkPay+ manages the dispute process with your payment partners on your behalf, but your cooperation and timely evidence submission are essential to contesting a dispute successfully.
 
 ## How disputes work
 
-The dispute process follows a standard sequence driven by the card networks and payment providers.
-
 <Steps>
-  <Step title="Customer files a dispute">
-    The customer contacts their bank, card issuer, or payment provider and requests a chargeback, citing a reason such as unauthorized use, non-delivery, or a billing discrepancy.
+  <Step title="Dispute opened">
+    The customer contacts their bank or card issuer. The bank initiates a chargeback against the transaction. PkPay+ receives the dispute notification from your payment partner and notifies you by email and in the dashboard.
   </Step>
-  <Step title="Bank notifies PkPay+">
-    The issuing bank or payment network forwards the dispute to PkPay+, along with the reason code and any customer-provided information.
+  <Step title="Funds withheld">
+    PkPay+ places a hold on the disputed transaction amount. A chargeback fee equal to 12% of the disputed amount is also applied to your account.
   </Step>
-  <Step title="PkPay+ notifies you">
-    PkPay+ sends you an email notification and creates an alert in your merchant dashboard. The disputed transaction is updated to `disputed` status and appears in the **Disputes** section.
+  <Step title="Evidence requested">
+    PkPay+ emails you with the dispute details and requests supporting evidence. You have **three (3) business days** from PkPay+'s request to submit your evidence — sooner if the payment partner deadline is shorter.
   </Step>
-  <Step title="You submit evidence">
-    You review the customer's claim and submit supporting evidence through the dashboard within the response window. PkPay+ forwards your evidence to the payment network on your behalf.
+  <Step title="Evidence submitted">
+    PkPay+ reviews your evidence and submits it to the payment partner or card network on your behalf.
   </Step>
-  <Step title="Bank makes the final decision">
-    The issuing bank reviews the evidence from both sides and makes a final ruling. This process typically takes **30–90 days** depending on the card network and dispute reason. PkPay+ notifies you of the outcome.
+  <Step title="Decision issued">
+    The customer's issuing bank or card network reviews the evidence and issues a final decision. PkPay+ notifies you of the outcome and updates the transaction status accordingly.
   </Step>
 </Steps>
+
+<Warning>
+  The three-business-day evidence deadline is strict. If you miss the deadline, PkPay+ may accept the dispute without contesting it, and the funds will be returned to the customer. Monitor your email and dashboard notifications closely.
+</Warning>
 
 ## Dispute statuses
 
-Track the current state of each dispute in your dashboard.
+| Status | Meaning |
+|--------|---------|
+| `needs_response` | A dispute has been opened and PkPay+ is awaiting your evidence submission. |
+| `evidence_submitted` | PkPay+ has submitted your evidence to the payment partner. The bank is reviewing. |
+| `under_review` | The payment partner or card network is reviewing the case. |
+| `won` | The dispute was decided in your favour. The held funds are released back to your account. |
+| `lost` | The dispute was decided in the customer's favour. The transaction amount and chargeback fee are deducted from your account. |
+| `accepted` | PkPay+ accepted the dispute (either automatically or at your instruction) without contesting. |
 
-| Status | Description |
-|---|---|
-| `needs_response` | The evidence submission window is open. **Act now** — submit your evidence before the deadline to avoid a default loss. |
-| `under_review` | You have submitted evidence and the bank is reviewing the case. No further action is required from you at this stage. |
-| `won` | The dispute was resolved in your favor. The held funds are returned to your account. |
-| `lost` | The dispute was resolved in the customer's favor. The funds are not recovered and the chargeback fee applies. |
-| `closed` | The dispute was closed without a final resolution — for example, if the customer withdrew the claim. |
+## Viewing disputes in the dashboard
+
+Log in to [merchant.pkpayplus.com](https://merchant.pkpayplus.com) and select **Disputes** from the left sidebar. Each row shows:
+
+- **Dispute ID** and **Transaction ID**
+- **Customer** name and email
+- **Disputed amount** and currency
+- **Dispute reason** (e.g. `fraudulent`, `product_not_received`, `subscription_cancelled`)
+- **Response deadline**
+- **Status**
+
+Click any dispute row to open the full detail view where you can submit evidence.
+
+## Dispute reasons
+
+Different dispute reasons require different types of evidence. Common dispute reasons include:
+
+<Accordion title="Fraudulent (unauthorized transaction)">
+  The customer claims they did not authorise the payment. Provide evidence of legitimate authorisation: IP address or device records at checkout, 3D Secure authentication records, prior transaction history with the same customer, or delivery confirmation to the billing address.
+</Accordion>
+
+<Accordion title="Product or service not received">
+  The customer claims the goods or services were never delivered. Provide shipping confirmation, carrier tracking with delivery confirmation, digital delivery logs, or service completion records.
+</Accordion>
+
+<Accordion title="Product not as described">
+  The customer claims what they received was materially different from what you advertised. Provide product descriptions, photos, original order details, and any customer communications that show the product was accurately represented.
+</Accordion>
+
+<Accordion title="Duplicate transaction">
+  The customer was charged more than once for the same order. Provide order records showing only one transaction was processed, or refund records showing any duplicate was already resolved.
+</Accordion>
+
+<Accordion title="Subscription or recurring billing">
+  The customer disputes a recurring charge. Provide the original subscription sign-up confirmation, the cancellation policy the customer accepted, and any cancellation request records.
+</Accordion>
 
 ## Submitting evidence
 
-Submit your evidence as soon as you receive a dispute notification. Delays reduce your chance of winning.
-
 <Steps>
-  <Step title="Go to Disputes in the dashboard">
-    Navigate to the **Disputes** section of your merchant dashboard at [https://merchant.pkpayplus.com/](https://merchant.pkpayplus.com/). Disputes with `needs_response` status are listed first.
-  </Step>
   <Step title="Open the dispute">
-    Click the dispute to view the customer's claim, the dispute reason code, the original transaction details, and the evidence submission deadline.
+    Go to **Disputes** in the dashboard and click the dispute with status `needs_response`.
   </Step>
-  <Step title="Review the customer's claim">
-    Read the reason code and customer statement carefully. Your evidence should directly address the specific claim — for example, proof of delivery for a "not received" dispute, or authorization records for a "fraud" claim.
+  <Step title="Review the dispute reason">
+    Read the reason code provided. Use this to determine which evidence documents are most relevant.
   </Step>
-  <Step title="Attach supporting evidence">
-    Upload one or more of the following documents depending on the dispute type:
-
-    - **Order receipt or invoice** — confirms the transaction and what was purchased
-    - **Proof of delivery or fulfillment** — shipping confirmation, tracking number, or digital access log
-    - **Customer communication** — emails, chat logs, or support tickets showing the customer acknowledged the purchase
-    - **Refund policy** — a copy of your posted refund or cancellation policy
-    - **Identity verification** — evidence the cardholder authorized the transaction (e.g. signed agreement, IP address match, 3DS authentication result)
+  <Step title="Upload your evidence">
+    Upload supporting documents in the evidence panel. Accepted formats include PDF, JPG, and PNG. Add a written explanation in the **Additional context** field to help the reviewer understand the transaction.
   </Step>
   <Step title="Submit before the deadline">
-    Click **Submit Evidence** before the deadline shown on the dispute page. PkPay+ requires your evidence at least **3 business days** before the external network deadline to allow time for review and submission. Late submissions cannot be forwarded.
+    Click **Submit evidence**. The status updates to `evidence_submitted`. You cannot add further evidence after submission, so make sure your submission is complete.
   </Step>
 </Steps>
 
-## Dispute prevention tips
+## Evidence types PkPay+ may request
 
-The best dispute is one that never happens. Use these practices to reduce your chargeback rate.
+Depending on the dispute reason, PkPay+ may request any of the following:
 
-<Accordion title="Use a clear billing descriptor">
-  Your billing descriptor is the name that appears on your customer's bank or card statement. If it's unclear or unrecognizable, customers may dispute the charge assuming it's fraud. Set your descriptor to your trading name or the name your customers know you by. Update it in **Settings → Business Details** in the dashboard.
+- Transaction records and invoices
+- Customer name and contact information
+- Product or service descriptions
+- Proof of delivery (carrier tracking, delivery confirmation)
+- Shipping confirmation and tracking information
+- Customer communications (emails, chat logs, support tickets)
+- Accepted terms and conditions or refund policy
+- Cancellation records
+- Proof of service completion (digital access logs, login records)
+- IP address or device information (where legally permissible)
+- Evidence of prior transactions with the same customer
+- Proof of any refund already issued
+- Signed contracts or authorisation documents
+
+<Note>
+  Evidence must be accurate, complete, and clearly organised. The issuing bank's reviewer may have limited time to assess your submission — label documents clearly and include a concise summary of the transaction history.
+</Note>
+
+## Chargeback fees
+
+PkPay+ charges a fee of **12% of the disputed amount** for each chargeback received, regardless of the outcome. This fee is separate from the disputed transaction amount itself.
+
+For example, if the disputed transaction was $500, the chargeback fee is $60. If you win the dispute, the $500 is returned to your account, but the $60 fee is not refunded.
+
+<Accordion title="How chargeback fees are collected">
+  The chargeback fee is deducted from your available PkPay+ balance at the time the dispute is opened. If your balance is insufficient, the fee becomes an outstanding amount recovered from future settlements.
 </Accordion>
 
-<Accordion title="Refund proactively">
-  When a customer requests a refund for a legitimate reason, issue it promptly rather than letting the request escalate into a chargeback. A refund costs less than a dispute and keeps your chargeback rate low. Note that issuing a refund after a chargeback has already been initiated does not automatically cancel the dispute.
-</Accordion>
+## Chargeback rate monitoring
 
-<Accordion title="Communicate clearly and quickly">
-  Many disputes arise from confusion, not fraud. Respond to customer complaints and support requests quickly. Acknowledge issues, explain your process, and provide resolutions in writing — those communications can also serve as evidence if a dispute is later filed.
-</Accordion>
+PkPay+ monitors your dispute activity continuously. If your chargeback rate reaches or exceeds **1%**, your account enters enhanced risk review. PkPay+ may respond by:
 
-<Accordion title="Enable 3D Secure">
-  3D Secure 2.0 adds an authentication step to card payments that shifts liability for fraud-related chargebacks to the card issuer in many cases. Enable 3DS in your checkout settings to reduce fraud disputes. PkPay+ supports 3D Secure 2.0 on all plans.
-</Accordion>
+- Increasing your reserve requirement
+- Extending your settlement period
+- Restricting certain payment methods
+- Requiring additional fraud controls
+- Suspending processing in severe cases
 
-<Accordion title="Keep records of all transactions">
-  Store order receipts, delivery confirmations, fulfillment records, and customer communications for every transaction. You typically have only a few days to respond to a dispute, so having records readily accessible is critical. Retain records for at least 18 months.
-</Accordion>
+A 1% chargeback rate is a review trigger, not an automatic suspension threshold. PkPay+ may also act below 1% if the nature of your disputes indicates elevated risk.
 
-## Dispute fees
+## Preventing disputes
 
-<Warning>
-  Each dispute incurs a chargeback fee regardless of whether you win or lose. Maintaining a dispute rate below **1% of your total transactions** is important — card networks impose additional penalties and restrictions on merchants who exceed this threshold, which can affect your ability to process payments. If your dispute rate rises, contact PkPay+ support to review your risk settings.
-</Warning>
+Taking proactive steps to reduce chargebacks protects your revenue and keeps your account in good standing.
 
-Chargeback fees are deducted from your account balance at the time the dispute is opened. If you win the dispute, the transaction amount is returned, but the chargeback fee is typically non-refundable.
+<CardGroup cols={2}>
+  <Card title="Use clear billing descriptors" icon="file-signature">
+    Make sure your business name on the customer's bank statement matches what they recognise. Confusing descriptors are a leading cause of "I don't recognise this charge" disputes.
+  </Card>
+  <Card title="Send order confirmations" icon="envelope">
+    Email a detailed receipt immediately after purchase — include the product name, amount, and your customer support contact. This reduces confusion and gives customers a direct path to resolve issues with you first.
+  </Card>
+  <Card title="Provide delivery tracking" icon="truck">
+    Share carrier tracking numbers for physical goods so customers can follow their shipment. Disputes for non-delivery drop significantly when customers have visibility into delivery status.
+  </Card>
+  <Card title="Respond to support requests quickly" icon="headset">
+    Most customers raise a chargeback only after failing to get a response from the merchant. A fast, friendly support response can resolve the issue before a dispute is ever opened.
+  </Card>
+  <Card title="Display your refund policy clearly" icon="rotate-left">
+    Show your refund and cancellation policy at checkout and require explicit acceptance. This provides evidence that the customer understood the terms at the time of purchase.
+  </Card>
+  <Card title="Use 3D Secure authentication" icon="shield-check">
+    Enable 3D Secure for eligible card transactions. Successful 3DS authentication shifts liability for fraudulent chargebacks to the card issuer, not your account.
+  </Card>
+</CardGroup>
 
-<Info>
-  PkPay+ includes built-in chargeback alerts and real-time risk monitoring on all plans. These tools flag high-risk transactions before they become disputes and alert you to emerging patterns in your account activity, giving you a chance to resolve issues proactively.
-</Info>
+## Disputes you cannot win
+
+PkPay+ may choose not to contest a dispute if it determines that:
+
+- Insufficient evidence is available
+- The cost of representment outweighs the transaction value
+- The dispute reason makes a successful outcome unlikely
+- The payment partner does not support representment for the specific dispute reason
+
+PkPay+ may accept a dispute without your separate approval in these circumstances. You authorise PkPay+ to exercise this right as part of using the platform.
+
+## Contacting PkPay+ about a dispute decision
+
+If you disagree with how PkPay+ handled a dispute, contact [legal@paydios.io](mailto:legal@paydios.io) with your dispute ID and a description of your concern. PkPay+ and the merchant should first attempt to resolve the matter directly before pursuing formal dispute resolution under the Merchant Agreement.

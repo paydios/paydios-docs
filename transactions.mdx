@@ -1,76 +1,133 @@
 ---
-title: "View, Filter, and Export Transaction Records"
+title: "View, Filter, and Export PkPay+ Transactions"
 sidebarTitle: "Transactions"
-description: "Access your full transaction history in PkPay+. Filter by status, date, amount, or payment method, and export records for reconciliation."
+description: "Browse all transactions in your PkPay+ account. Filter by status, date, or amount, view full details, and export records for reconciliation."
+icon: "receipt"
 ---
 
-Every payment, refund, and failed attempt is recorded as a transaction in PkPay+. The **Transactions** section of your merchant dashboard gives you a complete, searchable history of all activity on your account — from the first payment you accepted to the most recent refund you issued. Use it to investigate payment issues, track revenue, manage refunds, and prepare reconciliation exports.
+The Transactions page in your PkPay+ dashboard gives you a complete record of every payment that has been initiated through your merchant account. You can filter and search the list, inspect individual transactions, issue refunds, and export data for accounting or reconciliation purposes.
 
 ## Transaction statuses
 
-Each transaction carries a status that reflects its current state in the payment lifecycle.
+Every transaction in PkPay+ has a status that reflects its current state in the payment lifecycle:
 
-| Status | Description |
-|---|---|
-| `paid` | Payment completed successfully. Funds are settled or pending settlement to your account. |
-| `pending` | Payment has been initiated and is awaiting confirmation from the card network or payment provider. |
-| `failed` | The payment attempt was declined by the card issuer or failed due to a processing error. The customer was not charged. |
-| `refunded` | A full or partial refund has been issued to the customer. |
-| `disputed` | The customer has raised a chargeback or dispute with their bank. See [Disputes](/disputes) for how to respond. |
+| Status | Meaning |
+|--------|---------|
+| `paid` | The payment was successfully completed and funds have been collected. |
+| `pending` | The payment has been initiated but is awaiting confirmation from the payment network or customer's bank. |
+| `failed` | The payment attempt was declined or otherwise could not be completed. No funds were collected. |
+| `refunded` | The full transaction amount has been returned to the customer. |
+| `partial_refund` | A portion of the transaction amount has been returned to the customer. |
+| `disputed` | The customer has opened a chargeback or dispute with their bank or card issuer. |
+
+<Note>
+  A `disputed` transaction is not the same as a `refunded` one. A dispute is initiated by the customer's bank, not by you. See the [Disputes](/disputes) page for how to respond to and manage chargebacks.
+</Note>
+
+## Viewing the transaction list
+
+Log in to [merchant.pkpayplus.com](https://merchant.pkpayplus.com) and select **Transactions** from the left sidebar. The list shows all transactions in reverse chronological order with the following columns:
+
+| Column | Description |
+|--------|-------------|
+| **Transaction ID** | Unique identifier for the payment |
+| **Customer** | Customer name and email address |
+| **Date** | Date and time the transaction was created |
+| **Amount** | Payment amount and currency |
+| **Status** | Current transaction status |
+| **Session ID** | The checkout session associated with this transaction |
+
+Click any row to open the full transaction detail view.
 
 ## Filtering transactions
 
-Use the filter controls at the top of the Transactions list to narrow your view. Available filters include:
+Use the filters at the top of the transaction list to narrow the results:
 
-- **Date range** — select a start and end date to view transactions in a specific period
-- **Status** — filter by one or more statuses (e.g. show only `failed` or `disputed` transactions)
-- **Payment method** — filter by card type, wallet, or payment rail (e.g. Visa, Apple Pay, Bitcoin, PIX)
-- **Amount range** — set minimum and maximum transaction amounts
-- **Currency** — filter by any of the 135+ supported currencies
-- **Customer name or email** — search for all transactions linked to a specific customer
+<Accordion title="Filter by status">
+  Select one or more statuses from the **Status** dropdown: `paid`, `pending`, `failed`, `refunded`, `partial_refund`, or `disputed`. The list updates immediately to show only matching transactions.
+</Accordion>
 
-You can combine multiple filters at once. The list updates in real time as you adjust your criteria.
+<Accordion title="Filter by date range">
+  Use the **Date** filter to set a start and end date. For example, select the current calendar month to prepare a monthly reconciliation report.
+</Accordion>
 
-## Transaction details
+<Accordion title="Filter by amount">
+  Set a minimum and/or maximum amount in the **Amount** filter to find transactions within a specific value range. Amounts are filtered in the currency of your merchant account.
+</Accordion>
 
-Click any transaction in the list to open its full detail view. The detail page shows:
+<Accordion title="Search by customer or transaction ID">
+  Type a customer name, email address, or transaction ID into the search bar to jump directly to a specific record.
+</Accordion>
 
-- **Amount and currency** — the exact charge amount in the transaction currency
-- **Payment method** — card brand, last four digits, or wallet / payment rail used
-- **Customer information** — name, email, and billing address
-- **Timestamp** — date and time the transaction was created and last updated
-- **Session ID** — the checkout session identifier, useful for debugging API integrations
-- **Raw response data** — the full response from the payment processor, including authorization codes and decline reasons for failed payments
+## Transaction detail view
+
+Clicking a transaction opens the detail view, which includes:
+
+- **Transaction ID** and **Session ID**
+- **Customer** name, email, and billing address
+- **Payment method** (card type, last four digits)
+- **Amount**, **currency**, and **status**
+- **Timestamps** — created, updated, and settled dates
+- **Refund history** — any partial or full refunds applied to this transaction
+- **Dispute status** — if a dispute has been opened, a link to the dispute detail
 
 ## Issuing a refund
 
-You can issue a full or partial refund on any `paid` transaction directly from the dashboard.
-
 <Steps>
   <Step title="Open the transaction">
-    In the **Transactions** list, click the transaction you want to refund to open its detail page.
+    Find the transaction in the list and click it to open the detail view.
   </Step>
   <Step title="Click Refund">
-    Select the **Refund** button on the transaction detail page.
+    Click the **Refund** button in the top-right corner of the transaction detail panel.
   </Step>
-  <Step title="Choose the refund amount">
-    Select **Full refund** to return the entire transaction amount, or enter a specific amount for a **partial refund**. Partial refunds can be issued multiple times up to the original transaction total.
+  <Step title="Choose full or partial refund">
+    Enter the amount to refund. For a full refund, the field is pre-filled with the original transaction amount. For a partial refund, enter the specific amount to return.
   </Step>
-  <Step title="Confirm the refund">
-    Review the refund details and confirm. The refund is processed immediately. Funds typically appear in the customer's account within **5–10 business days**, depending on their card issuer or payment provider.
+  <Step title="Confirm">
+    Click **Confirm refund**. The transaction status updates to `refunded` or `partial_refund`. The customer receives the funds according to their payment method's standard processing time.
   </Step>
 </Steps>
 
-<Note>
-  Issuing a refund does not automatically cancel an open dispute. If the customer has already raised a chargeback, the refund and the dispute are handled as separate processes. See [Disputes](/disputes) for more information.
-</Note>
+<Warning>
+  Refunds cannot be reversed once confirmed. Verify the amount before confirming.
+</Warning>
 
 ## Exporting transactions
 
-To export your transaction data for accounting or reconciliation, apply the filters you need to narrow the result set, then click **Export**. PkPay+ generates a CSV file containing all matching transaction records, including amounts, statuses, payment methods, customer details, and timestamps.
+Export your transaction data as a CSV file for use in accounting software, reconciliation spreadsheets, or your own reporting pipelines.
 
-Export the filtered set rather than the full history to keep files manageable and directly relevant to the period or report you're preparing.
+<Steps>
+  <Step title="Apply filters (optional)">
+    Filter the transaction list to the date range, status, or other criteria you want to export. The export will include exactly the records currently shown in the filtered view.
+  </Step>
+  <Step title="Click Export">
+    Click the **Export** button at the top-right of the transaction list.
+  </Step>
+  <Step title="Receive the file">
+    PkPay+ generates the CSV and sends a download link to the email address associated with your merchant account. Large exports may take a few minutes to prepare.
+  </Step>
+</Steps>
+
+The exported CSV includes the following columns:
+
+```text
+transaction_id, session_id, customer_name, customer_email, amount, currency,
+status, created_at, updated_at, settled_at, payment_method, last_four,
+refunded_amount, dispute_status
+```
+
+## Understanding failed transactions
+
+A `failed` status means the payment was not completed. Common causes include:
+
+- Card declined by the issuing bank
+- Insufficient funds
+- Incorrect card details entered by the customer
+- 3D Secure authentication failure
+- Card expired
+
+Failed transactions do not result in any charge to the customer. The customer can retry by starting a new checkout session. No funds are held or collected for failed transactions.
 
 <Tip>
-  Use transaction exports alongside your payout reports for end-of-month reconciliation. Filter transactions by the same date range as your payout period to match settled amounts against the funds received in your bank account.
+  If you see a high rate of `failed` transactions from a specific card type or country, contact [help@paydios.io](mailto:help@paydios.io) to review your payment method configuration.
 </Tip>

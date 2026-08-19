@@ -1,44 +1,104 @@
 ---
-title: "Manage Customers and Payment Profiles in PkPay+"
+title: "Customer Profiles and Payment History in PkPay+"
 sidebarTitle: "Customers"
-description: "View and manage your customer profiles in PkPay+. Access payment history, saved methods, and customer details from the merchant dashboard."
+description: "View and manage customer profiles, payment history, and personal data in the PkPay+ dashboard. Understand what data is stored and how to manage it."
+icon: "users"
 ---
 
-PkPay+ automatically creates a customer record for every person who completes a payment through your checkout. You can view customer profiles, browse their full payment history, and access contact and billing details directly from the merchant dashboard at [https://merchant.pkpayplus.com/](https://merchant.pkpayplus.com/). No manual setup is required — records are created at the time of the first successful transaction.
+Every time a customer completes a checkout session through your PkPay+ integration, a customer profile is created or updated in your merchant account. These profiles give you a consolidated view of each buyer's contact information, transaction history, and payment activity — all accessible from the dashboard without writing any code.
 
-## Viewing customers
+## What is stored in a customer profile
 
-The **Customers** section of your dashboard lists all customers associated with your merchant account. Each row in the list shows:
+PkPay+ automatically captures and stores the following information when a customer makes a payment:
 
-- **Name** and **email address**
-- **Total spend** across all transactions
-- **Last transaction date**
-- **Customer status** (active, inactive)
+<CardGroup cols={2}>
+  <Card title="Contact Information" icon="address-card">
+    Name, email address, and billing address as entered during checkout.
+  </Card>
+  <Card title="Payment History" icon="clock-rotate-left">
+    A chronological list of every transaction the customer has completed through your account, including amounts, currencies, statuses, and dates.
+  </Card>
+  <Card title="Transaction Totals" icon="chart-bar">
+    Lifetime spend, number of successful payments, and any refunded or disputed amounts.
+  </Card>
+  <Card title="Dispute and Refund Activity" icon="triangle-exclamation">
+    Any chargebacks, refunds, or disputes associated with the customer's payments on your account.
+  </Card>
+</CardGroup>
 
-Use the search bar to find a customer by name or email address. You can also filter the list by date range or customer status to narrow down results when managing a large customer base.
+## Viewing customers in the dashboard
 
-## Customer profile
+Log in to [merchant.pkpayplus.com](https://merchant.pkpayplus.com) and navigate to **Customers** in the left sidebar. The customer list shows:
 
-Click any customer in the list to open their full profile. Each profile page includes the following information:
+- Customer name and email
+- Date of first payment
+- Total number of transactions
+- Total lifetime spend
+- Most recent transaction date and status
 
-- **Contact details** — full name, email address, and billing address on file
-- **Payment history** — a complete log of all transactions, including amounts, currencies, dates, and statuses (`paid`, `pending`, `failed`, `refunded`, `disputed`)
-- **Saved payment methods** — card details or wallet tokens stored if the customer opted in during checkout
-- **Active subscriptions** — any recurring billing plans the customer is currently enrolled in
-- **Invoices** — all invoices issued to that customer, with their current payment status
+Click any customer row to open the full customer profile with their complete transaction history.
 
-From the profile page you can click into any individual transaction to view its full detail, or navigate directly to a linked subscription or invoice.
+## Searching and filtering customers
+
+Use the search bar at the top of the customer list to find a specific customer by name or email address. You can also filter the list by:
+
+- **Date range** — show only customers who made their first purchase within a given period
+- **Transaction status** — filter to customers with at least one `paid`, `refunded`, or `disputed` transaction
+- **Spend range** — narrow the list to customers above or below a lifetime spend threshold
+
+## Customer payment history
+
+The payment history tab inside a customer profile lists every transaction in reverse chronological order. Each row shows:
+
+| Field | Description |
+|-------|-------------|
+| **Transaction ID** | Unique identifier for the payment |
+| **Date** | Date and time the payment was initiated |
+| **Amount** | Payment amount and currency |
+| **Status** | Current status: `paid`, `pending`, `failed`, `refunded`, or `disputed` |
+| **Session ID** | The checkout session that generated the transaction |
+
+Click any transaction row to open the full transaction detail view, where you can issue a refund or view dispute information if applicable.
+
+## Issuing a refund from a customer profile
+
+<Steps>
+  <Step title="Open the customer profile">
+    Navigate to **Customers**, find the customer, and click their name to open the profile.
+  </Step>
+  <Step title="Select the transaction">
+    Under **Payment history**, click the transaction you want to refund.
+  </Step>
+  <Step title="Initiate the refund">
+    Click **Refund** in the transaction detail panel. Choose a full or partial refund amount and confirm.
+  </Step>
+  <Step title="Confirm the refund">
+    The transaction status updates to `refunded` (full) or `partial_refund`. The customer receives the funds according to their payment method's standard processing time.
+  </Step>
+</Steps>
+
+<Note>
+  Refunds are deducted from your available PkPay+ balance. If your balance is insufficient, the refund amount becomes an outstanding balance owed to PkPay+ and is recovered from future settlements.
+</Note>
 
 ## Customer data and privacy
 
-PkPay+ stores only the payment and contact data necessary to process and record transactions. All stored data is protected under PCI DSS Level 1 compliance, and payment card data is tokenized so raw card numbers are never held in PkPay+ systems.
+PkPay+ stores customer data only as needed to process payments, manage your merchant account, and comply with legal obligations.
 
-Under GDPR, customers in applicable regions have the right to request deletion of their personal data. If a customer contacts you with a data deletion request, reach out to PkPay+ support so the request can be handled in compliance with applicable regulations. Deleting a customer record does not alter historical transaction records required for financial compliance.
+<Accordion title="What data is retained and for how long?">
+  PkPay+ retains transaction records and associated customer data for the period required to satisfy payment-network chargeback windows, legal obligations, and dispute resolution requirements. This is typically a minimum of five years for transaction records. Contact [help@paydios.io](mailto:help@paydios.io) for specific data-retention questions.
+</Accordion>
 
-## Exporting customer data
+<Accordion title="Handling customer data deletion requests">
+  If a customer submits a data deletion or erasure request under applicable privacy law, contact [legal@paydios.io](mailto:legal@paydios.io). PkPay+ will review the request against its legal retention obligations and respond accordingly. Note that transaction records required for compliance, dispute resolution, or fraud prevention cannot be deleted early.
+</Accordion>
 
-To export your customer list, navigate to **Customers** in the dashboard, apply any filters you need (such as a date range or status), and click **Export**. PkPay+ generates a CSV file containing the filtered customer records, which you can download for use in CRM tools, marketing platforms, or internal reporting.
+<Accordion title="Exporting customer data">
+  To export a customer's complete transaction history, open the customer profile in the dashboard and click **Export** in the top-right corner. The export is delivered as a CSV file to the email address associated with your merchant account.
+</Accordion>
 
-<Info>
-  Customer management via the PkPay+ API is coming soon. For now, all customer viewing, searching, and exporting is handled through the merchant dashboard. Watch the changelog for updates on the Customer API.
-</Info>
+## Tips for managing customer data quality
+
+<Tip>
+  Encourage customers to use a consistent email address across purchases. PkPay+ uses email address as the primary identifier when linking transactions to a customer profile — different email addresses result in separate profiles even for the same person.
+</Tip>

@@ -1,14 +1,14 @@
 ---
-title: "Accept Online Payments with the PkPay+ Checkout API"
+title: "Accept Online Payments with the Paydios Checkout API"
 sidebarTitle: "Accept Payments"
-description: "Create checkout sessions, redirect customers to hosted checkout, and handle payment success or failure using the PkPay+ API or PHP SDK."
+description: "Create checkout sessions, redirect customers to hosted checkout, and handle payment success or failure using the Paydios API or PHP SDK."
 ---
 
-PkPay+ lets you accept one-time payments globally through hosted checkout sessions. Create a session server-side, redirect your customer to the PkPay+-hosted checkout page, and then verify the result — all without building or maintaining your own payment UI.
+Paydios lets you accept one-time payments globally through hosted checkout sessions. Create a session server-side, redirect your customer to the Paydios-hosted checkout page, and then verify the result — all without building or maintaining your own payment UI.
 
 ## How checkout works
 
-1. **Create a checkout session** server-side using the PkPay+ API or PHP SDK.
+1. **Create a checkout session** server-side using the Paydios API or PHP SDK.
 2. **Redirect the customer** to the `checkout_url` returned in the session response.
 3. **Customer pays** using their preferred method — card, wallet, crypto, or local rail.
 4. **Verify the session** by polling the verify endpoint or listening for a webhook notification to confirm payment status.
@@ -20,24 +20,24 @@ Call the sessions endpoint with your merchant ID, the amount in the smallest cur
 <Tabs>
   <Tab title="PHP SDK">
     ```php
-    use PkPayPlus\Client;
-
+    use Paydios\Client;
+    
     $pk = new Client(['secret_key' => 'sk_live_xxx']);
-
+    
     $session = $pk->sessions()->create($merchantId, [
         'amount'      => 2999,          // amount in cents
         'currency'    => 'USD',
         'description' => 'Order #1042',
         'source'      => 'custom_php',
     ]);
-
+    
     $sessionId   = $session['session_id'];
     $checkoutUrl = $session['checkout_url']; // redirect your customer here
     ```
   </Tab>
   <Tab title="cURL">
     ```bash
-    curl -X POST https://api.pkpayplus.com/merchant-api/{merchant_id}/checkout-sessions \
+    curl -X POST https://api.paydios.io/merchant-api/{merchant_id}/checkout-sessions \
       -H "Authorization: Bearer sk_live_xxx" \
       -H "Content-Type: application/json" \
       -d '{
@@ -53,11 +53,11 @@ Call the sessions endpoint with your merchant ID, the amount in the smallest cur
 ## Request parameters
 
 <ParamField body="amount" type="integer" required>
-  The payment amount in the **smallest currency unit** — for example, cents for USD. To charge $29.99, send `2999`.
+  The payment amount in the **smallest currency unit** — for example, cents for USD. To charge \$29.99, send `2999`.
 </ParamField>
 
 <ParamField body="currency" type="string" required>
-  ISO 4217 currency code, e.g. `USD`, `EUR`, `GBP`. PkPay+ supports 135+ currencies.
+  ISO 4217 currency code, e.g. `USD`, `EUR`, `GBP`. Paydios supports 135\+ currencies.
 </ParamField>
 
 <ParamField body="description" type="string">
@@ -76,7 +76,7 @@ After the customer completes checkout, verify the session to confirm whether the
   <Tab title="PHP SDK">
     ```php
     $status = $pk->sessions()->verify($merchantId, $sessionId);
-
+    
     if ($status['status'] === 'paid') {
         // fulfil the order
     } elseif ($status['status'] === 'pending') {
@@ -88,7 +88,7 @@ After the customer completes checkout, verify the session to confirm whether the
   </Tab>
   <Tab title="cURL">
     ```bash
-    curl -X GET https://api.pkpayplus.com/merchant-api/{merchant_id}/{session_id} \
+    curl -X GET https://api.paydios.io/merchant-api/{merchant_id}/{session_id} \
       -H "Authorization: Bearer sk_live_xxx"
     ```
   </Tab>
@@ -96,17 +96,18 @@ After the customer completes checkout, verify the session to confirm whether the
 
 The response includes a `status` field with one of the following values:
 
-| Status    | Meaning                                                   |
-| --------- | --------------------------------------------------------- |
-| `paid`    | Payment completed successfully. Safe to fulfil the order. |
+| Status | Meaning |
+| --- | --- |
+| `paid` | Payment completed successfully. Safe to fulfil the order. |
 | `pending` | Payment is still processing. Poll again after a short delay. |
-| `failed`  | Payment was not completed. Prompt the customer to retry.  |
+| `failed` | Payment was not completed. Prompt the customer to retry. |
 
 ## Supported payment methods
 
-PkPay+ automatically shows all available payment methods at checkout based on your customer's location and device.
+Paydios automatically shows all available payment methods at checkout based on your customer's location and device.
 
 **Credit & Debit Cards**
+
 - Visa
 - Mastercard
 - American Express
@@ -116,11 +117,13 @@ PkPay+ automatically shows all available payment methods at checkout based on yo
 - Maestro
 
 **Digital Wallets**
+
 - Google Pay
 - Apple Pay
 - Revolut Pay
 
 **Cryptocurrencies**
+
 - Bitcoin (BTC)
 - Ethereum (ETH)
 - Solana (SOL)
@@ -130,9 +133,11 @@ PkPay+ automatically shows all available payment methods at checkout based on yo
 - BNB Chain (BNB)
 
 **Local Rails**
+
 - PIX — Brazil instant bank transfer
 
 **Buy Now, Pay Later**
+
 - Klarna BNPL — available in Europe and the US
 
 <Tip>

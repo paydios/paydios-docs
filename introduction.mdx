@@ -1,56 +1,61 @@
 ---
-title: "What Is PkPay+? A Global Merchant Payment Platform"
+title: "What Is Paydios? A Global Merchant Payment Platform"
 sidebarTitle: "Introduction"
-description: "PkPay+ is a full-stack merchant payments platform. Accept cards, wallets, crypto, and local rails across 160+ countries with one integration."
+description: "Paydios is a full-stack merchant payments platform. Accept cards, wallets, crypto, and local rails across 160+ countries with one integration."
 ---
 
-PkPay+ (also branded as Paydios) is a full-stack merchant payments platform built for businesses that need to accept money globally, manage recurring revenue, and move funds reliably — without juggling multiple providers. With a single integration you can accept credit and debit cards, digital wallets, cryptocurrency, and local payment rails like PIX and SEPA across 160+ countries and 135+ currencies. PkPay+ pairs a developer-friendly REST API and PHP SDK with a merchant dashboard that gives you real-time control over products, checkout sessions, invoices, subscriptions, and payouts.
+Paydios is a full-stack merchant payments platform built for businesses that need to accept money globally, manage recurring revenue, and move funds reliably — without juggling multiple providers. With a single integration you can accept credit and debit cards, digital wallets, cryptocurrency, and local payment rails like PIX and SEPA across 160\+ countries and 135\+ currencies. Paydios pairs a developer-friendly REST API and PHP SDK with a merchant dashboard that gives you real-time control over products, checkout sessions, invoices, subscriptions, and payouts.
 
-## What you can do with PkPay+
+## What you can do with Paydios
 
 <CardGroup cols={2}>
   <Card title="Accept Payments" icon="credit-card" href="/accept-payments">
     Process one-time payments via a hosted checkout session. Supports cards, wallets, crypto, and local rails globally.
   </Card>
+
   <Card title="Subscriptions" icon="arrows-rotate" href="/subscriptions">
     Automate recurring billing with flat-rate, usage-based, or per-seat pricing. Reduce churn with smart retry and dunning logic.
   </Card>
+
   <Card title="Invoicing" icon="file-invoice" href="/invoicing">
     Create and send branded invoices with embedded one-click payment links, automated reminders, and auto-reconciliation.
   </Card>
+
   <Card title="Payouts" icon="money-bill-transfer" href="/payouts">
     Settle funds to your bank account on a transparent schedule. Track every payout in the dashboard.
   </Card>
+
   <Card title="Payment Links" icon="link" href="/payment-links">
     Generate shareable payment URLs in seconds — no code required. Share via email, SMS, or social.
   </Card>
-  <Card title="Merchant Dashboard" icon="chart-line" href="https://merchant.pkpayplus.com/">
-    Manage products, API keys, transactions, subscribers, and analytics in one place at merchant.pkpayplus.com.
+
+  <Card title="Merchant Dashboard" icon="chart-line" href="https://merchant.paydios.io/">
+    Manage products, API keys, transactions, subscribers, and analytics in one place at merchant.paydios.io.
   </Card>
 </CardGroup>
 
 ## Supported payment methods
 
-PkPay+ routes payments across cards, wallets, crypto, local bank rails, and buy-now-pay-later — so your customers always have a familiar way to pay.
+Paydios routes payments across cards, wallets, crypto, local bank rails, and buy-now-pay-later — so your customers always have a familiar way to pay.
 
 | Category | Methods |
-|---|---|
+| --- | --- |
 | **Cards** | Visa, Mastercard, American Express, JCB, Discover, Diners Club, Maestro |
 | **Digital Wallets** | Google Pay, Apple Pay, Revolut Pay |
 | **Cryptocurrency** | Bitcoin (BTC), Ethereum (ETH), Solana (SOL), USDT, USDC, TRON (TRX), BNB |
 | **Local Rails** | PIX (Brazil / LatAm), SEPA |
 | **Buy Now, Pay Later** | Klarna (Europe & US) |
 
-PkPay+ supports **135+ currencies** and operates in **160+ countries**, with smart routing that maximises authorisation rates automatically.
+Paydios supports **135\+ currencies** and operates in **160\+ countries**, with smart routing that maximises authorisation rates automatically.
 
 ## How it works
 
 <Steps>
   <Step title="Integrate the API or PHP SDK">
-    Add PkPay+ to your backend using the REST API or the PHP SDK (`composer require pkpayplus/pkpayplus-php`). Create a product and open a checkout session in a few lines of code.
+    Add Paydios to your backend using the REST API or the PHP SDK (`composer require paydios/paydios-php`). Create a product and open a checkout session in a few lines of code.
   </Step>
   <Step title="Your customer pays via hosted checkout">
-    PkPay+ presents a secure, PCI-compliant hosted checkout page. Your customer selects their preferred payment method — card, wallet, crypto, or local rail — and completes the payment.
+    Paydios presents a secure, PCI-compliant hosted checkout page. Your customer selects their preferred payment method — card, wallet, crypto, or local rail — and completes the payment.
   </Step>
   <Step title="You receive your payout">
     Once the payment is confirmed, the funds are settled to your account. Track the status in the merchant dashboard and schedule payouts to your bank on your preferred cadence.
@@ -59,18 +64,18 @@ PkPay+ supports **135+ currencies** and operates in **160+ countries**, with sma
 
 ## Developer-friendly by design
 
-PkPay+ is built API-first so you can integrate quickly and stay in control. The REST API uses standard HTTP verbs and returns JSON. The official PHP SDK wraps the API with idiomatic PHP methods and handles authentication automatically.
+Paydios is built API-first so you can integrate quickly and stay in control. The REST API uses standard HTTP verbs and returns JSON. The official PHP SDK wraps the API with idiomatic PHP methods and handles authentication automatically.
 
 Install the PHP SDK with Composer:
 
 ```bash
-composer require pkpayplus/pkpayplus-php
+composer require paydios/paydios-php
 ```
 
 Authenticate by setting your secret key as an environment variable:
 
 ```env
-PKPAYPLUS_SECRET_KEY=sk_live_xxxxxxxxx
+PAYDIOS_SECRET_KEY=sk_live_xxxxxxxxx
 ```
 
 Then make your first API call:
@@ -78,13 +83,13 @@ Then make your first API call:
 ```php
 <?php
 require __DIR__ . '/vendor/autoload.php';
-use PkPayPlus\Client;
+use Paydios\Client;
 
-$pk = new Client(); // reads PKPAYPLUS_SECRET_KEY from env
+$pk = new Client(); // reads PAYDIOS_SECRET_KEY from env
 $products = $pk->products()->list(['per_page' => 20]);
 ```
 
-PkPay+ infrastructure is certified **PCI DSS Level 1** — the highest level in the payments industry — so your customers' card data is always handled to the strictest security standards. Additional certifications include ISO 27001, SOC 2 Type II, and GDPR compliance.
+Paydios infrastructure is certified **PCI DSS Level 1** — the highest level in the payments industry — so your customers' card data is always handled to the strictest security standards. Additional certifications include ISO 27001, SOC 2 Type II, and GDPR compliance.
 
 <Note>
   Ready to start building? Follow the [Quickstart](/quickstart) to create your account, get your API keys, and make your first test payment in under 10 minutes.

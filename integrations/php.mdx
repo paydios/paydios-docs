@@ -1,10 +1,10 @@
 ---
-title: "PkPay+ PHP SDK: Manage Products and Checkout Sessions"
+title: "Paydios PHP SDK: Manage Products and Checkout Sessions"
 sidebarTitle: "PHP SDK"
-description: "Install the official PkPay+ PHP SDK with Composer to manage products, create checkout sessions, and verify payments. Requires PHP 8.1+."
+description: "Install the official Paydios PHP SDK with Composer to manage products, create checkout sessions, and verify payments. Requires PHP 8.1+."
 ---
 
-The PkPay+ PHP SDK lets you integrate payment processing into any PHP application. It wraps the Merchant API and handles authentication, request formatting, and error handling for you — so you can manage products, create checkout sessions, and verify payments without writing raw HTTP calls.
+The Paydios PHP SDK lets you integrate payment processing into any PHP application. It wraps the Merchant API and handles authentication, request formatting, and error handling for you — so you can manage products, create checkout sessions, and verify payments without writing raw HTTP calls.
 
 <Warning>
   This SDK is for **server-side (merchant backend)** use only. Never expose your secret key in frontend code or commit it to version control.
@@ -12,7 +12,7 @@ The PkPay+ PHP SDK lets you integrate payment processing into any PHP applicatio
 
 ## Requirements
 
-- PHP 8.1+
+- PHP 8.1\+
 - [Composer](https://getcomposer.org/)
 
 ## Installation
@@ -20,7 +20,7 @@ The PkPay+ PHP SDK lets you integrate payment processing into any PHP applicatio
 Install the SDK with Composer:
 
 ```bash
-composer require pkpayplus/pkpayplus-php
+composer require paydios/paydios-php
 ```
 
 ## Configuration
@@ -28,8 +28,8 @@ composer require pkpayplus/pkpayplus-php
 The SDK resolves configuration in this order:
 
 1. Config array passed directly to `Client`
-2. Environment variables (`PKPAYPLUS_SECRET_KEY`, `PKPAYPLUS_BASE_URL`)
-3. Default base URL (`https://api.pkpayplus.com`)
+2. Environment variables (`PAYDIOS_SECRET_KEY`, `PAYDIOS_BASE_URL`)
+3. Default base URL (`https://api.paydios.io`)
 
 This means you can rely on environment variables for credentials and only override when needed.
 
@@ -38,7 +38,7 @@ This means you can rely on environment variables for credentials and only overri
 Create a `.env` file in your project root and add your secret key:
 
 ```env
-PKPAYPLUS_SECRET_KEY=sk_live_xxxxxxxxx
+PAYDIOS_SECRET_KEY=sk_live_xxxxxxxxx
 ```
 
 <Tip>
@@ -51,7 +51,7 @@ If you prefer to configure the client explicitly, pass an array when creating th
 
 ```php
 $pk = new Client([
-  'base_url'   => 'https://api.pkpayplus.com',
+  'base_url'   => 'https://api.paydios.io',
   'secret_key' => 'sk_live_xxx'
 ]);
 ```
@@ -65,7 +65,7 @@ Once the SDK is installed and your secret key is set in your environment, you ca
 
 require __DIR__ . '/vendor/autoload.php';
 
-use PkPayPlus\Client;
+use Paydios\Client;
 
 $pk = new Client();
 
@@ -78,7 +78,7 @@ print_r($products);
 
 All Merchant API requests are authenticated with a Bearer token:
 
-```
+```text
 Authorization: Bearer {secret_key}
 ```
 
@@ -88,13 +88,13 @@ The SDK sets this header automatically using the secret key you provide. You nev
 
 The merchant identity is inferred from your secret key, so you do not need to pass a merchant ID to product endpoints. The SDK uses the following endpoints:
 
-| Method   | Endpoint                                    |
-|----------|---------------------------------------------|
-| `GET`    | `/merchant-api/products`                    |
-| `POST`   | `/merchant-api/products`                    |
-| `GET`    | `/merchant-api/products/{product_id}`       |
-| `PUT`    | `/merchant-api/products/{product_id}`       |
-| `DELETE` | `/merchant-api/products/{product_id}`       |
+| Method | Endpoint |
+| --- | --- |
+| `GET` | `/merchant-api/products` |
+| `POST` | `/merchant-api/products` |
+| `GET` | `/merchant-api/products/{product_id}` |
+| `PUT` | `/merchant-api/products/{product_id}` |
+| `DELETE` | `/merchant-api/products/{product_id}` |
 
 ### List products
 
@@ -157,14 +157,14 @@ Use checkout sessions for backend-driven payment flows. The session returns a `c
 
 The SDK uses these endpoints:
 
-| Method  | Endpoint                                              |
-|---------|-------------------------------------------------------|
-| `POST`  | `/merchant-api/{merchant_id}/checkout-sessions`       |
-| `GET`   | `/merchant-api/{merchant_id}/{session_id}`            |
+| Method | Endpoint |
+| --- | --- |
+| `POST` | `/merchant-api/{merchant_id}/checkout-sessions` |
+| `GET` | `/merchant-api/{merchant_id}/{session_id}` |
 
 ### Create checkout session
 
-Create a session for a specific transaction. Pass your Merchant ID (available in the [merchant dashboard](https://merchant.pkpayplus.com/)):
+Create a session for a specific transaction. Pass your Merchant ID (available in the [merchant dashboard](https://merchant.paydios.io/)):
 
 ```php
 $session = $pk->sessions()->create($merchantId, [
@@ -200,9 +200,9 @@ The SDK ships with unit tests (mocked HTTP) and optional integration tests that 
 Integration tests are skipped unless you explicitly enable them. Add the following to your `.env`:
 
 ```env
-PKPAYPLUS_INTEGRATION=1
-PKPAYPLUS_BASE_URL=http://localhost:8000
-PKPAYPLUS_SECRET_KEY=sk_test_xxx
+PAYDIOS_INTEGRATION=1
+PAYDIOS_BASE_URL=http://localhost:8000
+PAYDIOS_SECRET_KEY=sk_test_xxx
 ```
 
 Then run:
@@ -222,7 +222,7 @@ For Laravel-specific setup — including `config/services.php` registration, con
 If the SDK cannot find a secret key, requests will fail with an authentication error. Make sure your environment includes:
 
 ```env
-PKPAYPLUS_SECRET_KEY=sk_test_xxx
+PAYDIOS_SECRET_KEY=sk_test_xxx
 ```
 
 If you are passing config manually, confirm the `secret_key` key is present in the array passed to `Client`.
@@ -236,10 +236,11 @@ If you are passing config manually, confirm the `secret_key` key is present in t
 ## Resources
 
 <CardGroup cols={2}>
-  <Card title="PkPay+ PHP SDK on GitHub" icon="github" href="https://github.com/pkpayplus/pkpayplus-php">
+  <Card title="Paydios PHP SDK on GitHub" icon="github" href="https://github.com/paydios/paydios-php">
     Browse the source code, open issues, and contribute to the SDK.
   </Card>
-  <Card title="Packagist Package" icon="box" href="https://packagist.org/packages/pkpayplus/pkpayplus-php">
+
+  <Card title="Packagist Package" icon="box" href="https://packagist.org/packages/paydios/paydios-php">
     View the Composer package on Packagist for version history and install stats.
   </Card>
 </CardGroup>

@@ -1,14 +1,14 @@
 ---
-title: "PkPay+ API Authentication: Bearer Tokens and SDK Auth"
+title: "Paydios API Authentication: Bearer Tokens and SDK Auth"
 sidebarTitle: "Authentication"
-description: "PkPay+ authenticates every API request with Bearer token API keys. Learn how to pass keys securely, use the PHP SDK auto-auth, and handle auth errors."
+description: "Paydios authenticates every API request with Bearer token API keys. Learn how to pass keys securely, use the PHP SDK auto-auth, and handle auth errors."
 ---
 
-PkPay+ authenticates every API request using API keys passed as Bearer tokens in the `Authorization` HTTP header. There are no sessions, cookies, or OAuth flows — every request is authenticated independently using the key you provide. Your keys are scoped to your merchant account and grant access to all resources within it, so keeping them secure is essential.
+Paydios authenticates every API request using API keys passed as Bearer tokens in the `Authorization` HTTP header. There are no sessions, cookies, or OAuth flows — every request is authenticated independently using the key you provide. Your keys are scoped to your merchant account and grant access to all resources within it, so keeping them secure is essential.
 
 ## Get your API keys
 
-Log in to the merchant dashboard and navigate to **Dashboard → API Keys** at [merchant.pkpayplus.com/dashboard/api-keys](https://merchant.pkpayplus.com/dashboard/api-keys). You will find two types of credential:
+Log in to the merchant dashboard and navigate to **Dashboard → API Keys** at [merchant.paydios.io/dashboard/api-keys](https://merchant.paydios.io/dashboard/api-keys). You will find two types of credential:
 
 **Secret Key** (`sk_live_xxxxxxxxx`) — your secret key grants full server-side access to all API resources: creating products, opening checkout sessions, verifying payments, and more. Use this key **only on your server**. Never expose it in frontend code, browser-side JavaScript, mobile apps, or public repositories.
 
@@ -27,14 +27,14 @@ Authorization: Bearer sk_live_xxxxxxxxx
 Here is a complete example using `curl` to list your products:
 
 ```bash
-curl https://api.pkpayplus.com/merchant-api/products \
+curl https://api.paydios.io/merchant-api/products \
   -H "Authorization: Bearer sk_live_xxxxxxxxx"
 ```
 
 And an example creating a checkout session (which also requires your Merchant ID in the path):
 
 ```bash
-curl -X POST https://api.pkpayplus.com/merchant-api/{merchant_id}/checkout-sessions \
+curl -X POST https://api.paydios.io/merchant-api/{merchant_id}/checkout-sessions \
   -H "Authorization: Bearer sk_live_xxxxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
@@ -52,21 +52,21 @@ The PHP SDK handles authentication automatically. Set your secret key as an envi
 Add your key to your `.env` file:
 
 ```env
-PKPAYPLUS_SECRET_KEY=sk_live_xxxxxxxxx
+PAYDIOS_SECRET_KEY=sk_live_xxxxxxxxx
 ```
 
 Then create the client without any arguments:
 
 ```php
-use PkPayPlus\Client;
+use Paydios\Client;
 
-$pk = new Client(); // auto-reads PKPAYPLUS_SECRET_KEY from env
+$pk = new Client(); // auto-reads PAYDIOS_SECRET_KEY from env
 ```
 
 If you prefer to pass the key explicitly (for example, in a multi-tenant setup where different merchants use different keys), you can do so directly:
 
 ```php
-use PkPayPlus\Client;
+use Paydios\Client;
 
 $pk = new Client(['secret_key' => 'sk_live_xxxxxxxxx']);
 ```
@@ -75,14 +75,14 @@ In Laravel, register your credentials in `config/services.php` and pass them to 
 
 ```php
 // config/services.php
-'pkpayplus' => [
-    'base_url'   => env('PKPAYPLUS_BASE_URL'),
-    'secret_key' => env('PKPAYPLUS_SECRET_KEY'),
+'paydios' => [
+    'base_url'   => env('PAYDIOS_BASE_URL'),
+    'secret_key' => env('PAYDIOS_SECRET_KEY'),
 ],
 ```
 
 ```php
-$pk = new \PkPayPlus\Client(config('services.pkpayplus'));
+$pk = new \Paydios\Client(config('services.paydios'));
 ```
 
 ## Security best practices
@@ -96,15 +96,15 @@ Follow these practices to keep your keys secure:
 - **Store keys in environment variables**, not hard-coded in source files. Use `.env` locally and your hosting provider's secret management in production.
 - **Add `.env` to `.gitignore`** so it is never committed to version control.
 - **Use the publishable key for client-side checkout** — it is scoped to checkout-only operations and is safe to include in browser code.
-- **Rotate your secret key immediately** if you suspect it has been compromised. Generate a new key in the dashboard at [merchant.pkpayplus.com/dashboard/api-keys](https://merchant.pkpayplus.com/dashboard/api-keys) and update all server environments.
+- **Rotate your secret key immediately** if you suspect it has been compromised. Generate a new key in the dashboard at [merchant.paydios.io/dashboard/api-keys](https://merchant.paydios.io/dashboard/api-keys) and update all server environments.
 - **Restrict access** to the server processes and team members that genuinely need the secret key.
 
 ## Authentication errors
 
-If a request fails due to an authentication problem, PkPay+ returns a standard HTTP error code with a JSON error body. The two most common errors are:
+If a request fails due to an authentication problem, Paydios returns a standard HTTP error code with a JSON error body. The two most common errors are:
 
 | HTTP Status | Error | Cause |
-|---|---|---|
+| --- | --- | --- |
 | `401 Unauthorized` | Missing or invalid API key | The `Authorization` header is absent, malformed, or contains a key that does not exist or has been revoked. Check that you are passing `Bearer sk_live_...` correctly. |
 | `403 Forbidden` | Insufficient permissions | The API key is valid but does not have permission to access the requested resource. Ensure you are using your Secret Key (not Publishable Key) for server-side endpoints. |
 

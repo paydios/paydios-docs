@@ -1,11 +1,11 @@
 ---
-title: "PkPay+ API Keys: Create, Rotate, and Secure"
+title: "Paydios API Keys: Create, Rotate, and Secure"
 sidebarTitle: "API Keys"
-description: "Manage your PkPay+ secret and publishable API keys. Learn how to create keys, use them in requests, rotate them, and keep them secure."
+description: "Manage your Paydios secret and publishable API keys. Learn how to create keys, use them in requests, rotate them, and keep them secure."
 icon: "key"
 ---
 
-PkPay+ uses API keys to authenticate every request you make to the Merchant API. You have two types of key — a secret key for server-side calls and a publishable key for client-side checkout flows. This page explains the difference, how to create and manage your keys, and how to keep them secure.
+Paydios uses API keys to authenticate every request you make to the Merchant API. You have two types of key — a secret key for server-side calls and a publishable key for client-side checkout flows. This page explains the difference, how to create and manage your keys, and how to keep them secure.
 
 ## Key types
 
@@ -13,6 +13,7 @@ PkPay+ uses API keys to authenticate every request you make to the Merchant API.
   <Card title="Secret Key" icon="lock">
     Prefixed `sk_live_`. Grants full server-side access to all API resources — products, checkout sessions, verifications, and more. **Never expose this in frontend code.**
   </Card>
+
   <Card title="Publishable Key" icon="eye">
     Safe to include in browser JavaScript and mobile apps. Scoped to client-side checkout operations only and does not grant access to server-side resources.
   </Card>
@@ -20,7 +21,7 @@ PkPay+ uses API keys to authenticate every request you make to the Merchant API.
 
 ## Finding your API keys
 
-Log in to the [PkPay+ dashboard](https://merchant.pkpayplus.com/dashboard/api-keys) and navigate to **Dashboard → API Keys**. Both keys are displayed on this page alongside your Merchant ID.
+Log in to the [Paydios dashboard](https://merchant.paydios.io/dashboard/api-keys) and navigate to **Dashboard → API Keys**. Both keys are displayed on this page alongside your Merchant ID.
 
 ## Using your secret key in API requests
 
@@ -33,14 +34,14 @@ Authorization: Bearer sk_live_xxxxxxxxx
 Here is a complete example using `curl` to list your products:
 
 ```bash
-curl https://api.pkpayplus.com/merchant-api/products \
+curl https://api.paydios.io/merchant-api/products \
   -H "Authorization: Bearer sk_live_xxxxxxxxx"
 ```
 
 And an example that creates a checkout session (which also requires your Merchant ID in the path):
 
 ```bash
-curl -X POST https://api.pkpayplus.com/merchant-api/{merchant_id}/checkout-sessions \
+curl -X POST https://api.paydios.io/merchant-api/{merchant_id}/checkout-sessions \
   -H "Authorization: Bearer sk_live_xxxxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
@@ -53,12 +54,12 @@ curl -X POST https://api.pkpayplus.com/merchant-api/{merchant_id}/checkout-sessi
 
 ## Setting up your secret key as an environment variable
 
-Store your secret key in an environment variable rather than hard-coding it in source files. The PkPay+ PHP SDK reads this variable automatically.
+Store your secret key in an environment variable rather than hard-coding it in source files. The Paydios PHP SDK reads this variable automatically.
 
 Add the following to your `.env` file:
 
 ```env
-PKPAYPLUS_SECRET_KEY=sk_live_xxxxxxxxx
+PAYDIOS_SECRET_KEY=sk_live_xxxxxxxxx
 ```
 
 <Warning>
@@ -67,16 +68,16 @@ PKPAYPLUS_SECRET_KEY=sk_live_xxxxxxxxx
 
 ## Using your secret key with the PHP SDK
 
-Once `PKPAYPLUS_SECRET_KEY` is set in your environment, create the client without any arguments:
+Once `PAYDIOS_SECRET_KEY` is set in your environment, create the client without any arguments:
 
 ```php
 <?php
 
 require __DIR__ . '/vendor/autoload.php';
 
-use PkPayPlus\Client;
+use Paydios\Client;
 
-$pk = new Client(); // reads PKPAYPLUS_SECRET_KEY from env automatically
+$pk = new Client(); // reads PAYDIOS_SECRET_KEY from env automatically
 ```
 
 You can also pass the key explicitly if you prefer:
@@ -89,16 +90,16 @@ In a Laravel application, register the key in `config/services.php`:
 
 ```php
 // config/services.php
-'pkpayplus' => [
-    'base_url'   => env('PKPAYPLUS_BASE_URL', 'https://api.pkpayplus.com'),
-    'secret_key' => env('PKPAYPLUS_SECRET_KEY'),
+'paydios' => [
+    'base_url'   => env('PAYDIOS_BASE_URL', 'https://api.paydios.io'),
+    'secret_key' => env('PAYDIOS_SECRET_KEY'),
 ],
 ```
 
 Then pass the config array to the client:
 
 ```php
-$pk = new \PkPayPlus\Client(config('services.pkpayplus'));
+$pk = new \Paydios\Client(config('services.paydios'));
 ```
 
 ## Rotating your API keys
@@ -107,7 +108,7 @@ Rotate your secret key immediately if you suspect it has been compromised, or as
 
 <Steps>
   <Step title="Open the API Keys page">
-    Log in to [merchant.pkpayplus.com/dashboard/api-keys](https://merchant.pkpayplus.com/dashboard/api-keys).
+    Log in to [merchant.paydios.io/dashboard/api-keys](https://merchant.paydios.io/dashboard/api-keys).
   </Step>
   <Step title="Generate a new secret key">
     Click **Generate new key**. Your new `sk_live_` key is displayed once — copy it immediately because it will not be shown again.
@@ -128,7 +129,7 @@ Rotate your secret key immediately if you suspect it has been compromised, or as
 
 Follow these practices to keep your keys and account secure:
 
-- **Use environment variables** — store `PKPAYPLUS_SECRET_KEY` in `.env` locally and your hosting provider's secret manager in production. Never hard-code key values in source files.
+- **Use environment variables** — store `PAYDIOS_SECRET_KEY` in `.env` locally and your hosting provider's secret manager in production. Never hard-code key values in source files.
 - **Keep `.env` out of version control** — add `.env` to `.gitignore` and audit your repository history if you are unsure whether a key was previously committed.
 - **Use the publishable key for client-side code** — never use your secret key in browser JavaScript, mobile apps, or any code that runs on a customer's device.
 - **Limit access** — only the server processes and team members that genuinely need the secret key should have access to it.
@@ -137,6 +138,6 @@ Follow these practices to keep your keys and account secure:
 ## Authentication errors
 
 | HTTP Status | Meaning | Resolution |
-|-------------|---------|------------|
+| --- | --- | --- |
 | `401 Unauthorized` | Missing, malformed, or revoked API key | Confirm the `Authorization: Bearer sk_live_...` header is present and the key has not been revoked |
 | `403 Forbidden` | Key lacks permission for the resource | Ensure you are using your secret key (not publishable key) for server-side endpoints |

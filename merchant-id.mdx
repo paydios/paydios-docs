@@ -1,15 +1,15 @@
 ---
-title: "PkPay+ Merchant ID: Find and Use It"
+title: "Paydios Merchant ID: Find and Use It"
 sidebarTitle: "Merchant ID"
-description: "Your PkPay+ Merchant ID identifies your account in API paths. Learn where to find it and how to use it in checkout session requests."
+description: "Your Paydios Merchant ID identifies your account in API paths. Learn where to find it and how to use it in checkout session requests."
 icon: "fingerprint"
 ---
 
-Your Merchant ID is the unique identifier for your PkPay+ merchant account. You need it in the URL path of certain API calls — specifically when creating and verifying checkout sessions. Unlike your API keys, the Merchant ID is not a secret and does not need to be hidden from logs or version control.
+Your Merchant ID is the unique identifier for your Paydios merchant account. You need it in the URL path of certain API calls — specifically when creating and verifying checkout sessions. Unlike your API keys, the Merchant ID is not a secret and does not need to be hidden from logs or version control.
 
 ## Where to find your Merchant ID
 
-Log in to the [PkPay+ dashboard](https://merchant.pkpayplus.com/dashboard/api-keys) and navigate to **Dashboard → API Keys**. Your Merchant ID appears at the top of the page, above your API keys, in the format:
+Log in to the [Paydios dashboard](https://merchant.paydios.io/dashboard/api-keys) and navigate to **Dashboard → API Keys**. Your Merchant ID appears at the top of the page, above your API keys, in the format:
 
 ```text
 mid_xxxxxxxxxxxxxxxx
@@ -22,7 +22,7 @@ Copy it and store it alongside your other environment configuration.
 Two API endpoints require your Merchant ID in the URL path:
 
 | Method | Endpoint | Purpose |
-|--------|----------|---------|
+| --- | --- | --- |
 | `POST` | `/merchant-api/{merchant_id}/checkout-sessions` | Create a checkout session |
 | `GET` | `/merchant-api/{merchant_id}/{session_id}` | Retrieve or verify a session |
 
@@ -31,7 +31,7 @@ Replace `{merchant_id}` with your actual Merchant ID value. You still need to in
 ### Create a checkout session
 
 ```bash
-curl -X POST https://api.pkpayplus.com/merchant-api/mid_xxxxxxxxxxxxxxxx/checkout-sessions \
+curl -X POST https://api.paydios.io/merchant-api/mid_xxxxxxxxxxxxxxxx/checkout-sessions \
   -H "Authorization: Bearer sk_live_xxxxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
@@ -45,7 +45,7 @@ curl -X POST https://api.pkpayplus.com/merchant-api/mid_xxxxxxxxxxxxxxxx/checkou
 ### Verify a checkout session
 
 ```bash
-curl https://api.pkpayplus.com/merchant-api/mid_xxxxxxxxxxxxxxxx/sess_xxxxxxxxxx \
+curl https://api.paydios.io/merchant-api/mid_xxxxxxxxxxxxxxxx/sess_xxxxxxxxxx \
   -H "Authorization: Bearer sk_live_xxxxxxxxx"
 ```
 
@@ -58,9 +58,9 @@ The PHP SDK accepts your Merchant ID as an argument when calling session methods
 
 require __DIR__ . '/vendor/autoload.php';
 
-use PkPayPlus\Client;
+use Paydios\Client;
 
-$pk = new Client(); // reads PKPAYPLUS_SECRET_KEY from .env automatically
+$pk = new Client(); // reads PAYDIOS_SECRET_KEY from .env automatically
 
 $merchantId = 'mid_xxxxxxxxxxxxxxxx';
 
@@ -84,15 +84,15 @@ echo $status['status']; // e.g. "paid"
   Store your Merchant ID in an environment variable alongside your secret key so both are available to your application at runtime without being hard-coded.
 
   ```env
-  PKPAYPLUS_SECRET_KEY=sk_live_xxxxxxxxx
-  PKPAYPLUS_MERCHANT_ID=mid_xxxxxxxxxxxxxxxx
+  PAYDIOS_SECRET_KEY=sk_live_xxxxxxxxx
+  PAYDIOS_MERCHANT_ID=mid_xxxxxxxxxxxxxxxx
   ```
 </Tip>
 
 ## Merchant ID vs. API keys
 
 | Credential | Purpose | Keep secret? |
-|------------|---------|-------------|
+| --- | --- | --- |
 | **Merchant ID** | Identifies your account in URL paths | No — safe to log and reference |
 | **Secret Key** (`sk_live_…`) | Authenticates all API requests | **Yes** — treat like a password |
 | **Publishable Key** | Client-side checkout operations | No — safe for browser code |

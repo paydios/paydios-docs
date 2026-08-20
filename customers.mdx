@@ -1,26 +1,29 @@
 ---
-title: "Customer Profiles and Payment History in PkPay+"
+title: "Customer Profiles and Payment History in Paydios"
 sidebarTitle: "Customers"
-description: "View and manage customer profiles, payment history, and personal data in the PkPay+ dashboard. Understand what data is stored and how to manage it."
+description: "View and manage customer profiles, payment history, and personal data in the Paydios dashboard. Understand what data is stored and how to manage it."
 icon: "users"
 ---
 
-Every time a customer completes a checkout session through your PkPay+ integration, a customer profile is created or updated in your merchant account. These profiles give you a consolidated view of each buyer's contact information, transaction history, and payment activity — all accessible from the dashboard without writing any code.
+Every time a customer completes a checkout session through your Paydios integration, a customer profile is created or updated in your merchant account. These profiles give you a consolidated view of each buyer's contact information, transaction history, and payment activity — all accessible from the dashboard without writing any code.
 
 ## What is stored in a customer profile
 
-PkPay+ automatically captures and stores the following information when a customer makes a payment:
+Paydios automatically captures and stores the following information when a customer makes a payment:
 
 <CardGroup cols={2}>
   <Card title="Contact Information" icon="address-card">
     Name, email address, and billing address as entered during checkout.
   </Card>
+
   <Card title="Payment History" icon="clock-rotate-left">
     A chronological list of every transaction the customer has completed through your account, including amounts, currencies, statuses, and dates.
   </Card>
+
   <Card title="Transaction Totals" icon="chart-bar">
     Lifetime spend, number of successful payments, and any refunded or disputed amounts.
   </Card>
+
   <Card title="Dispute and Refund Activity" icon="triangle-exclamation">
     Any chargebacks, refunds, or disputes associated with the customer's payments on your account.
   </Card>
@@ -28,7 +31,7 @@ PkPay+ automatically captures and stores the following information when a custom
 
 ## Viewing customers in the dashboard
 
-Log in to [merchant.pkpayplus.com](https://merchant.pkpayplus.com) and navigate to **Customers** in the left sidebar. The customer list shows:
+Log in to [merchant.paydios.io](https://merchant.paydios.io) and navigate to **Customers** in the left sidebar. The customer list shows:
 
 - Customer name and email
 - Date of first payment
@@ -51,7 +54,7 @@ Use the search bar at the top of the customer list to find a specific customer b
 The payment history tab inside a customer profile lists every transaction in reverse chronological order. Each row shows:
 
 | Field | Description |
-|-------|-------------|
+| --- | --- |
 | **Transaction ID** | Unique identifier for the payment |
 | **Date** | Date and time the payment was initiated |
 | **Amount** | Payment amount and currency |
@@ -78,19 +81,19 @@ Click any transaction row to open the full transaction detail view, where you ca
 </Steps>
 
 <Note>
-  Refunds are deducted from your available PkPay+ balance. If your balance is insufficient, the refund amount becomes an outstanding balance owed to PkPay+ and is recovered from future settlements.
+  Refunds are deducted from your available Paydios balance. If your balance is insufficient, the refund amount becomes an outstanding balance owed to Paydios and is recovered from future settlements.
 </Note>
 
 ## Customer data and privacy
 
-PkPay+ stores customer data only as needed to process payments, manage your merchant account, and comply with legal obligations.
+Paydios stores customer data only as needed to process payments, manage your merchant account, and comply with legal obligations.
 
 <Accordion title="What data is retained and for how long?">
-  PkPay+ retains transaction records and associated customer data for the period required to satisfy payment-network chargeback windows, legal obligations, and dispute resolution requirements. This is typically a minimum of five years for transaction records. Contact [help@paydios.io](mailto:help@paydios.io) for specific data-retention questions.
+  Paydios retains transaction records and associated customer data for the period required to satisfy payment-network chargeback windows, legal obligations, and dispute resolution requirements. This is typically a minimum of five years for transaction records. Contact [help@paydios.io](mailto:help@paydios.io) for specific data-retention questions.
 </Accordion>
 
 <Accordion title="Handling customer data deletion requests">
-  If a customer submits a data deletion or erasure request under applicable privacy law, contact [legal@paydios.io](mailto:legal@paydios.io). PkPay+ will review the request against its legal retention obligations and respond accordingly. Note that transaction records required for compliance, dispute resolution, or fraud prevention cannot be deleted early.
+  If a customer submits a data deletion or erasure request under applicable privacy law, contact [legal@paydios.io](mailto:legal@paydios.io). Paydios will review the request against its legal retention obligations and respond accordingly. Note that transaction records required for compliance, dispute resolution, or fraud prevention cannot be deleted early.
 </Accordion>
 
 <Accordion title="Exporting customer data">
@@ -100,5 +103,5 @@ PkPay+ stores customer data only as needed to process payments, manage your merc
 ## Tips for managing customer data quality
 
 <Tip>
-  Encourage customers to use a consistent email address across purchases. PkPay+ uses email address as the primary identifier when linking transactions to a customer profile — different email addresses result in separate profiles even for the same person.
+  Encourage customers to use a consistent email address across purchases. Paydios uses email address as the primary identifier when linking transactions to a customer profile — different email addresses result in separate profiles even for the same person.
 </Tip>

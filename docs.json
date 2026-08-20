@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "name": "PkPay+",
+  "name": "Paydios",
   "theme": "luma",
   "colors": {
     "primary": "#081028",
@@ -64,13 +64,13 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@pkpayplus.com"
+        "href": "mailto:support@paydios.io"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://merchant.pkpayplus.com/"
+      "href": "https://merchant.paydios.io/"
     }
   },
   "footer": {
@@ -78,15 +78,15 @@
       {
         "header": "Product",
         "items": [
-          { "label": "Dashboard", "href": "https://merchant.pkpayplus.com/" },
+          { "label": "Dashboard", "href": "https://merchant.paydios.io/" },
           { "label": "Documentation", "href": "/" },
-          { "label": "Support", "href": "mailto:support@pkpayplus.com" }
+          { "label": "Support", "href": "mailto:support@paydios.io" }
         ]
       },
       {
         "header": "Community",
         "items": [
-          { "label": "GitHub", "href": "https://github.com/pkpayplus" }
+          { "label": "GitHub", "href": "https://github.com/paydios" }
         ]
       }
     ]

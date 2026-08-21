@@ -1,0 +1,18 @@
+/* Paydios lime backgrounds use black foregrounds for accessible contrast. */
+#topbar-cta-button,
+#topbar-cta-button *,
+#topbar-cta-button:hover,
+#topbar-cta-button:hover * {
+  color: #000000 !important;
+}
+
+#sidebar-content li[data-active],
+#sidebar-content li[data-active] > a {
+  background-color: #d4ff00 !important;
+  color: #000000 !important;
+}
+
+#sidebar-content li[data-active] *,
+#sidebar-content li[data-active] > a * {
+  color: #000000 !important;
+}
